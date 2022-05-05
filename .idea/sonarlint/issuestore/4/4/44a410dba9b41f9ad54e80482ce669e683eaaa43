@@ -1,0 +1,28 @@
+
+V	java:S125$"<This block of commented-out lines of code should be removed.(¸‡”…ÿÿÿÿÿ
+C
+java:S1185W"(Remove this method to simply inherit it.(ĞúŸüÿÿÿÿ
+Z
+java:S1134X"DTake the required action to fix the issue indicated by this comment.(÷Ã“
+R	java:S125"<This block of commented-out lines of code should be removed.(âÁ
+V
+java:S1161›":Add the "@Override" annotation above this method signature(àÜÍÉıÿÿÿÿ
+V
+java:S1161É":Add the "@Override" annotation above this method signature(ÕÊÌşşÿÿÿÿ
+W	java:S125—"<This block of commented-out lines of code should be removed.(Ê Ó€ùÿÿÿÿ
+N
+java:S1135"2Complete the task associated to this TODO comment.(®Ã¨ûÿÿÿÿ
+V
+java:S1161¢":Add the "@Override" annotation above this method signature(ûˆ¤Şøÿÿÿÿ
+Q
+java:S1161«":Add the "@Override" annotation above this method signature(Ëí‡ª
+I
+java:S1068©"2Remove this unused "SQLITE_CORRUPT" private field.(ÑÑç¶
+O
+java:S1068ª"3Remove this unused "SQLITE_NOTFOUND" private field.(ú¶¶Åøÿÿÿÿ
+E
+java:S1068«"/Remove this unused "SQLITE_FULL" private field.(ãëT
+I
+java:S1068¬"3Remove this unused "SQLITE_CANTOPEN" private field.(İ¯Š.
+?
+java:S1604µ"(Make this anonymous inner class a lambda(ÚÔ•Ü
