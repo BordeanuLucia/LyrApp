@@ -25,7 +25,7 @@ public class SongsRepository extends AbstractHibernateRepository<Song> implement
         List<Song> result = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            result = session.createQuery("from Song where title like '%" + keyWords + "'", Song.class).list();
+            result = session.createQuery("from Song where title like '" + keyWords + "%'", Song.class).list();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null)
