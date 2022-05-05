@@ -6,6 +6,7 @@ import java.util.Objects;
  * Class to store a verse of a song
  */
 public class Strophe {
+    private Long id;
     private Long position;
     private String text;
     private Long songId;
@@ -17,6 +18,14 @@ public class Strophe {
         this.position = position;
         this.text = text;
         this.songId = songId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getPosition() {
@@ -44,26 +53,28 @@ public class Strophe {
     }
 
     @Override
-    public String toString() {
-        return "Verse{" +
-                "position=" + position +
-                ", text='" + text + '\'' +
-                ", songId=" + songId +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Strophe strophe = (Strophe) o;
-        return Objects.equals(position, strophe.position) &&
+        return id == strophe.id &&
+                Objects.equals(position, strophe.position) &&
                 Objects.equals(text, strophe.text) &&
                 Objects.equals(songId, strophe.songId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, text, songId);
+        return Objects.hash(id, position, text, songId);
+    }
+
+    @Override
+    public String toString() {
+        return "Strophe{" +
+                "id=" + id +
+                ", position=" + position +
+                ", text='" + text + '\'' +
+                ", songId=" + songId +
+                '}';
     }
 }

@@ -16,7 +16,7 @@ public class LyrAppMain extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\LyrAppInterface.fxml"));
         Parent root = loader.load();
 
-        LyrAppController lyrAppController = loader.getController();
+//        LyrAppController lyrAppController = loader.getController();
 
         primaryStage.setTitle("LyrApp");
         primaryStage.setScene(new Scene(root));

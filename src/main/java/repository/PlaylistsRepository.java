@@ -4,7 +4,7 @@ import model.Playlist;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-public class PlaylistRepository extends AbstractHibernateRepository<Playlist> implements IPlaylistRepository {
+public class PlaylistsRepository extends AbstractHibernateRepository<Playlist> implements IPlaylistsRepository {
     @Override
     protected Query<Playlist> getFindQuery(Session session, Long id) {
         return null;

@@ -1,8 +1,9 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class used to store each song's information
@@ -10,7 +11,7 @@ import java.util.Objects;
 public class Song {
     private Long id;
     private String title;
-    private List<Strophe> lyrics;
+    private Set<Strophe> lyrics;
 
     public Song() {
     }
@@ -18,7 +19,7 @@ public class Song {
     public Song(Long id, String title) {
         this.id = id;
         this.title = title;
-        this.lyrics = new ArrayList<>();
+        this.lyrics = new HashSet<>();
     }
 
     public Long getId() {
@@ -37,11 +38,11 @@ public class Song {
         this.title = title;
     }
 
-    public List<Strophe> getLyrics() {
+    public Set<Strophe> getLyrics() {
         return lyrics;
     }
 
-    public void setLyrics(List<Strophe> lyrics) {
+    public void setLyrics(Set<Strophe> lyrics) {
         this.lyrics = lyrics;
     }
 

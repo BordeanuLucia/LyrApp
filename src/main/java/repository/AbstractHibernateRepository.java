@@ -126,6 +126,7 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
             result = getFindAllQuery(session).list();
             transaction.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();
