@@ -4,12 +4,11 @@ import model.Song;
 import repository.IPlaylistsRepository;
 import repository.ISongsRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LyrAppService implements ILyrAppService{
-    private ISongsRepository songsRepository;
-    private IPlaylistsRepository playlistRepository;
+    private final ISongsRepository songsRepository;
+    private final IPlaylistsRepository playlistRepository;
 
     public LyrAppService(ISongsRepository songsRepository, IPlaylistsRepository playlistRepository) {
         this.songsRepository = songsRepository;

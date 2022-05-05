@@ -34,7 +34,6 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
         }
 
         Transaction transaction = null;
-//        Optional<E> result = Optional.empty();
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.save(entity);
@@ -43,9 +42,7 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
             e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
-//            result = Optional.of(entity);
         }
-//        return result;
     }
 
     @Override
@@ -55,21 +52,16 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
         }
 
         Transaction transaction = null;
-//        Optional<E> result = Optional.empty();
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             E entity = findOne(id);
             if (entity != null)
                 session.delete(entity);
-//            result = findOne(id);
-//            result.ifPresent(session::delete);
             transaction.commit();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         }
-//        return result;
     }
 
     @Override
@@ -79,7 +71,6 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
         }
 
         Transaction transaction = null;
-//        Optional<E> result = Optional.empty();
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.update(entity);
@@ -88,9 +79,7 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
             e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
-//            result = Optional.of(entity);
         }
-//        return result;
     }
 
     @Override
@@ -110,7 +99,6 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
             result = entity != null ? entity : result;
         } catch (Exception e) {
             e.printStackTrace();
-//            System.out.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         }
@@ -127,11 +115,9 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
             if (transaction != null)
                 transaction.rollback();
         }
-
         return result;
     }
 

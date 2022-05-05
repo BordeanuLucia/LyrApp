@@ -57,7 +57,7 @@ public class Strophe {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Strophe strophe = (Strophe) o;
-        return id == strophe.id &&
+        return id.equals(strophe.id) &&
                 Objects.equals(position, strophe.position) &&
                 Objects.equals(text, strophe.text) &&
                 Objects.equals(songId, strophe.songId);
