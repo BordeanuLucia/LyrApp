@@ -34,6 +34,9 @@ public class LyrAppController implements Initializable {
         lyrAppService = new LyrAppService(songsRepository, playlistRepository);
     }
 
+    public LyrAppController() {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         songsListView.setItems(songsModel);
