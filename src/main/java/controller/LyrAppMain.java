@@ -41,6 +41,7 @@ public class LyrAppMain extends Application {
                 mainStage.setTitle("LyrApp");
                 mainStage.setScene(new Scene(mainRoot));
                 mainStage.setOnCloseRequest(event -> {
+                    lyrAppController.close();
                     Platform.exit();
                     System.exit(0);
                 });
