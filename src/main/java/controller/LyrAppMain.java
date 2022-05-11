@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class LyrAppMain extends Application {
@@ -24,27 +25,26 @@ public class LyrAppMain extends Application {
         FXMLLoader mainLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\LyrAppInterface.fxml"));
 
         Parent loadingRoot = loadingLoader.load();
-//        LoadingController loadingController = loadingLoader.getController();
         Scene loadingScene = new Scene(loadingRoot);
         loadingScene.setCursor(Cursor.DEFAULT);
         primaryStage.setScene(loadingScene);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Parent mainRoot = mainLoader.load();
-                    primaryStage.close();
+        Platform.runLater(() -> {
+            try {
+                Parent mainRoot = mainLoader.load();
+                LyrAppController lyrAppController = mainLoader.getController();
 
-                    Stage mainStage = new Stage();
-                    mainStage.setTitle("LyrApp");
-                    mainStage.setScene(new Scene(mainRoot));
-                    mainStage.show();
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
+                Stage mainStage = new Stage();
+                mainStage.centerOnScreen();
+                mainStage.setTitle("LyrApp");
+                mainStage.setScene(new Scene(mainRoot));
+                lyrAppController.configure();
+                primaryStage.close();
+                mainStage.show();
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         });
     }
