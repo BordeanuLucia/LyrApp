@@ -46,4 +46,8 @@ public class LiveController implements Initializable {
         Stage stage = (Stage) hourLabel.getScene().getWindow();
         stage.close();
     }
+
+    public void setClockLabel(String timeNow) {
+        hourLabel.setText(timeNow);
+    }
 }
