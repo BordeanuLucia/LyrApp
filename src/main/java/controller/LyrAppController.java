@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -64,8 +64,6 @@ public class LyrAppController implements Initializable {
         lyrAppService = new LyrAppService(songsRepository, playlistRepository);
     }
 
-    public LyrAppController() { }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeListViews();
@@ -97,34 +95,50 @@ public class LyrAppController implements Initializable {
         group.selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
             if (group.getSelectedToggle() != null) {
                 RadioButton selectedAlignment = (RadioButton) group.getSelectedToggle();
+                Pos alignment = Pos.BASELINE_CENTER;
+                TextAlignment textAlignment = TextAlignment.CENTER;
                 switch (selectedAlignment.getId()){
                     case "upLeftButton":
-                        textLabel.setAlignment(Pos.TOP_LEFT);
+                        alignment = Pos.TOP_LEFT;
+                        textAlignment = TextAlignment.LEFT;
                         break;
                     case "upCenterButton":
-                        textLabel.setAlignment(Pos.TOP_CENTER);
+                        alignment = Pos.TOP_CENTER;
+                        textAlignment = TextAlignment.CENTER;
                         break;
                     case "upRightButton":
-                        textLabel.setAlignment(Pos.TOP_RIGHT);
+                        alignment = Pos.TOP_RIGHT;
+                        textAlignment = TextAlignment.RIGHT;
                         break;
                     case "centerLeftButton":
-                        textLabel.setAlignment(Pos.CENTER_LEFT);
+                        alignment = Pos.CENTER_LEFT;
+                        textAlignment = TextAlignment.LEFT;
                         break;
                     case "centerCenterButton":
-                        textLabel.setAlignment(Pos.CENTER);
+                        alignment = Pos.CENTER;
+                        textAlignment = TextAlignment.CENTER;
                         break;
                     case "centerRightButton":
-                        textLabel.setAlignment(Pos.CENTER_RIGHT);
+                        alignment = Pos.CENTER_RIGHT;
+                        textAlignment = TextAlignment.RIGHT;
                         break;
                     case "downLeftButton":
-                        textLabel.setAlignment(Pos.BOTTOM_LEFT);
+                        alignment = Pos.BOTTOM_LEFT;
+                        textAlignment = TextAlignment.LEFT;
                         break;
                     case "downCenterButton":
-                        textLabel.setAlignment(Pos.BOTTOM_CENTER);
+                        alignment = Pos.BOTTOM_CENTER;
+                        textAlignment = TextAlignment.CENTER;
                         break;
                     case "downRightButton":
-                        textLabel.setAlignment(Pos.BOTTOM_RIGHT);
+                        alignment = Pos.BOTTOM_RIGHT;
+                        textAlignment = TextAlignment.RIGHT;
                         break;
+                }
+                textLabel.setAlignment(alignment);
+                textLabel.setTextAlignment(textAlignment);
+                for (LiveController liveController : liveControllers){
+                    liveController.setTextAlignment(alignment, textAlignment);
                 }
             }
         });
@@ -165,6 +179,13 @@ public class LyrAppController implements Initializable {
                 } else {
                     setText(item.getText());
                 }
+            }
+        });
+        strophesListView.setOnMouseClicked(event -> {
+            Strophe selectedStrophe = strophesListView.getSelectionModel().getSelectedItem();
+            textLabel.setText(selectedStrophe.getText());
+            for (LiveController liveController : liveControllers){
+                liveController.setTextLabel(selectedStrophe.getText());
             }
         });
     }
@@ -249,8 +270,11 @@ public class LyrAppController implements Initializable {
     }
 
     @FXML
-    public void clockButtonClicked(ActionEvent actionEvent) {
+    public void clockButtonClicked() {
         hourLabel.setVisible(!hourLabel.isVisible());
+        for (LiveController liveController : liveControllers){
+            liveController.setClockVisibility(hourLabel.isVisible());
+        }
     }
 
     public void close() { stopClock = true; }

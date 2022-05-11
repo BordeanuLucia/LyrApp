@@ -14,10 +14,9 @@ public class Song {
     public Song() {
     }
 
-    public Song(Long id, String title) {
-        this.id = id;
+    public Song(String title, Set<Strophe> lyrics) {
         this.title = title;
-        this.lyrics = new HashSet<>();
+        this.lyrics = lyrics;
     }
 
     public Long getId() {

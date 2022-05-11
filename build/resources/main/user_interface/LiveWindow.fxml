@@ -4,14 +4,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="mainAnchorPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LiveController">
    <children>
-      <Label fx:id="hourLabel" alignment="CENTER" layoutX="263.0" layoutY="409.0" text="00:00" textFill="WHITE">
+      <Label fx:id="hourLabel" alignment="CENTER" layoutX="263.0" layoutY="409.0" text="00:00" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="72.0" />
          </font>
       </Label>
-      <Label fx:id="textLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="11.0" prefHeight="494.0" prefWidth="698.0" textAlignment="RIGHT" />
+      <Label fx:id="textLabel" alignment="CENTER" layoutX="14.0" layoutY="11.0" prefHeight="494.0" prefWidth="698.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="36.0" />
+         </font></Label>
    </children>
 </AnchorPane>

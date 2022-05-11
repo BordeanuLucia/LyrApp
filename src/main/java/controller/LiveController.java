@@ -1,10 +1,14 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -24,6 +28,7 @@ public class LiveController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
     }
 
     public void configure(Screen screen) {
@@ -35,7 +40,12 @@ public class LiveController implements Initializable {
 
         hourLabel.setPrefWidth(width);
         hourLabel.setLayoutX(0);
-        hourLabel.setLayoutY(height - hourLabel.getHeight() - 60);
+        double aux = hourLabel.getFont().getSize();
+        hourLabel.setLayoutY(height - aux*4/5);
+
+        textLabel.setLayoutX(0);
+        textLabel.setLayoutY(0);
+        textLabel.setPrefSize(width, height - aux*3/5);
     }
 
     public Screen getCurrentScreen(){
@@ -49,5 +59,18 @@ public class LiveController implements Initializable {
 
     public void setClockLabel(String timeNow) {
         hourLabel.setText(timeNow);
+    }
+
+    public void setTextLabel(String text) {
+        textLabel.setText(text);
+    }
+
+    public void setTextAlignment(Pos alignment, TextAlignment textAlignment){
+        textLabel.setAlignment(alignment);
+        textLabel.setTextAlignment(textAlignment);
+    }
+
+    public void setClockVisibility(boolean visible) {
+        hourLabel.setVisible(visible);
     }
 }

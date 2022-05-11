@@ -12,9 +12,6 @@ public class LoadingController  implements Initializable {
     @FXML
     private ImageView imageView;
 
-    public LoadingController() {
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image("file:src/main/resources/pictures/LoadingImage.jpeg");

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
@@ -14,6 +15,9 @@
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </Label>
       <Label fx:id="loadingLabel1" layoutX="190.0" layoutY="155.0" prefHeight="94.0" prefWidth="220.0" text="LyrApp">
          <font>
@@ -26,6 +30,12 @@
                </bumpInput>
             </Lighting>
          </effect>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </Label>
    </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
 </AnchorPane>

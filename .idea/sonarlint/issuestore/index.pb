@@ -7,8 +7,6 @@ G
 src/main/java/Main.java,e\4\e44a8606ce010ad9b89aafdfcee2ab49afbf6d10
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-Q
-!src/main/java/model/Playlist.java,a\1\a19ac4f316cb85c4403156eed7e0c0c2382488f0
 M
 .idea/modules/LyrApp.main.iml,a\5\a5d1d89805a7b984a8d00e29019bcb68a6db20c8
 b
@@ -25,5 +23,3 @@ x
 Hsrc/main/java/utils/sqlite_utils/SQLiteDialectIdentityColumnSupport.java,d\5\d5b9dabdffa68bf0da71cb0b6698c2d5806b93d4
 Y
 )src/main/java/repository/IRepository.java,d\b\db4df2df3eb2b243efe80aeb3fa1810f67ca7e3e
-P
- src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25

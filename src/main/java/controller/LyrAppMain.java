@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class LyrAppMain extends Application {
@@ -30,6 +29,7 @@ public class LyrAppMain extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         loadingScene.setCursor(Cursor.DEFAULT);
+        loadingRoot.setCursor(Cursor.DEFAULT);
 
         Platform.runLater(() -> {
             try {
