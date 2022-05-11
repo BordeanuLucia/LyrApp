@@ -57,5 +57,6 @@
             <RadioButton fx:id="downRightButton" layoutX="54.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
          </children>
       </Pane>
+      <Button fx:id="clockButton" layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#clockButtonClicked" text="Ceas" />
    </children>
 </AnchorPane>

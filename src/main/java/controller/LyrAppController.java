@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -29,7 +30,9 @@ import service.LyrAppService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.List;
 
@@ -38,6 +41,7 @@ public class LyrAppController implements Initializable {
     private Screen currentScreen;
     private ObservableList<Screen> allScreens;
     private final List<LiveController> liveControllers = new ArrayList<>();
+    private volatile boolean stopClock = false;
 
     @FXML
     private TextField songSearchTextField;
@@ -53,6 +57,8 @@ public class LyrAppController implements Initializable {
     private Label textLabel;
     @FXML
     private RadioButton upLeftButton;
+    @FXML
+    private Label hourLabel;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -66,6 +72,23 @@ public class LyrAppController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initializeListViews();
         initializeRadioButtons();
+        initializeClock();
+    }
+
+    private void initializeClock() {
+        Thread thread = new Thread(() -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+            while (!stopClock) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) { }
+                String timeNow = sdf.format(new Date());
+                Platform.runLater(() -> {
+                    hourLabel.setText(timeNow);
+                });
+            }
+        });
+        thread.start();
     }
 
     private void initializeRadioButtons() {
@@ -223,4 +246,11 @@ public class LyrAppController implements Initializable {
             return;
         songsModel.setAll(lyrAppService.getFilteredSongs(keyWords));
     }
+
+    @FXML
+    public void clockButtonClicked(ActionEvent actionEvent) {
+        hourLabel.setVisible(!hourLabel.isVisible());
+    }
+
+    public void close() { stopClock = true; }
 }
