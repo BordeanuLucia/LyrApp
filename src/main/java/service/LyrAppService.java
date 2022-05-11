@@ -19,4 +19,7 @@ public class LyrAppService implements ILyrAppService{
     public List<Song> getFilteredSongs(String keyWords) {
         return songsRepository.getSongsByKeyWords(keyWords);
     }
+
+    @Override
+    public List<Song> getAllSongs() { return (List<Song>) songsRepository.getAll(); }
 }

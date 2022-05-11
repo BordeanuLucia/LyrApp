@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="659.0" prefWidth="882.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LyrAppController">
+   <children>
+      <TextField fx:id="songSearchTextField" layoutX="14.0" layoutY="354.0" onKeyPressed="#searchKeyPressed" prefHeight="34.0" prefWidth="268.0" promptText="caută melodie" />
+      <ListView fx:id="songsListView" layoutX="14.0" layoutY="389.0" prefHeight="256.0" prefWidth="268.0" />
+      <Button fx:id="liveButton" layoutX="772.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLiveButtonClicked" text="Live" />
+      <ListView fx:id="strophesListView" layoutX="14.0" layoutY="42.0" prefHeight="300.0" prefWidth="268.0" />
+      <Label fx:id="titleLabel" layoutX="15.0" layoutY="15.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="268.0" prefHeight="27.0" prefWidth="268.0">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="298.0" layoutY="42.0" prefHeight="300.0" prefWidth="346.0" style="-fx-background-color: black;">
+         <children>
+            <Label fx:id="hourLabel" layoutX="141.0" layoutY="264.0" text="00:00" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="25.0" />
+               </font>
+            </Label>
+            <Label fx:id="textLabel" layoutX="6.0" layoutY="14.0" prefHeight="256.0" prefWidth="334.0" text="HEI" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="299.0" layoutY="15.0" text="Previzualizare">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Pane layoutX="668.0" layoutY="157.0" prefHeight="82.0" prefWidth="80.0">
+         <children>
+            <RadioButton fx:id="upLeftButton" layoutX="6.0" layoutY="5.0" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="alignment" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="upCenterButton" layoutX="29.0" layoutY="5.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="centerCenterButton" layoutX="29.0" layoutY="30.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="centerRightButton" layoutX="54.0" layoutY="30.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="centerLeftButton" layoutX="6.0" layoutY="30.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="downLeftButton" layoutX="6.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="upRightButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="downCenterButton" layoutX="29.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
+            <RadioButton fx:id="downRightButton" layoutX="54.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

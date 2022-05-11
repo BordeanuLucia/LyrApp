@@ -3,21 +3,24 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Song;
+import model.Strophe;
 import repository.IPlaylistsRepository;
 import repository.ISongsRepository;
 import repository.PlaylistsRepository;
@@ -41,6 +44,15 @@ public class LyrAppController implements Initializable {
     @FXML
     private ListView<Song> songsListView;
     ObservableList<Song> songsModel = FXCollections.observableArrayList();
+    @FXML
+    private ListView<Strophe> strophesListView;
+    ObservableList<Strophe> strophesModel = FXCollections.observableArrayList();
+    @FXML
+    private Label titleLabel;
+    @FXML
+    private Label textLabel;
+    @FXML
+    private RadioButton upLeftButton;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -52,8 +64,52 @@ public class LyrAppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initializeListViews();
+        initializeRadioButtons();
+    }
+
+    private void initializeRadioButtons() {
+        ToggleGroup group = upLeftButton.getToggleGroup();
+        group.selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
+            if (group.getSelectedToggle() != null) {
+                RadioButton selectedAlignment = (RadioButton) group.getSelectedToggle();
+                switch (selectedAlignment.getId()){
+                    case "upLeftButton":
+                        textLabel.setAlignment(Pos.TOP_LEFT);
+                        break;
+                    case "upCenterButton":
+                        textLabel.setAlignment(Pos.TOP_CENTER);
+                        break;
+                    case "upRightButton":
+                        textLabel.setAlignment(Pos.TOP_RIGHT);
+                        break;
+                    case "centerLeftButton":
+                        textLabel.setAlignment(Pos.CENTER_LEFT);
+                        break;
+                    case "centerCenterButton":
+                        textLabel.setAlignment(Pos.CENTER);
+                        break;
+                    case "centerRightButton":
+                        textLabel.setAlignment(Pos.CENTER_RIGHT);
+                        break;
+                    case "downLeftButton":
+                        textLabel.setAlignment(Pos.BOTTOM_LEFT);
+                        break;
+                    case "downCenterButton":
+                        textLabel.setAlignment(Pos.BOTTOM_CENTER);
+                        break;
+                    case "downRightButton":
+                        textLabel.setAlignment(Pos.BOTTOM_RIGHT);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void initializeListViews() {
+        songsModel.setAll(lyrAppService.getAllSongs());
         songsListView.setItems(songsModel);
-        // to make only the title appear as a list item
+        songsListView.getSelectionModel().select(-1);
         songsListView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Song item, boolean empty) {
@@ -65,6 +121,25 @@ public class LyrAppController implements Initializable {
                         setText("No title");
                     else
                         setText(item.getTitle());
+                }
+            }
+        });
+        songsListView.setOnMouseClicked(event -> {
+            Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
+            titleLabel.setText(selectedSong.getTitle());
+            strophesModel.setAll(selectedSong.getOrderedLyrics());
+        });
+
+        strophesListView.setItems(strophesModel);
+        strophesListView.getSelectionModel().select(-1);
+        strophesListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Strophe item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.getText() == null || item.getText().strip().equals("")) {
+                    setText(null);
+                } else {
+                    setText(item.getText());
                 }
             }
         });
@@ -100,12 +175,21 @@ public class LyrAppController implements Initializable {
         });
         currentScreen = Screen.getPrimary();
 
-        try {
-            for (Screen screen : Screen.getScreens()) {
-                createLiveSceneForScreen(screen);
+        if (allScreens.size() > 1) {
+            try {
+                for (Screen screen : allScreens) {
+                    if (!screen.equals(currentScreen))
+                        createLiveSceneForScreen(screen);
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        } else {
+            try {
+                createLiveSceneForScreen(currentScreen);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

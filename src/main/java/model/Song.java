@@ -1,8 +1,7 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class used to store each song's information
@@ -67,5 +66,14 @@ public class Song {
     @Override
     public int hashCode() {
         return Objects.hash(id, title, lyrics);
+    }
+
+    public List<Strophe> getOrderedLyrics() {
+        return lyrics.stream().sorted((o1, o2) -> {
+            if (o1.getPosition() <= o2.getPosition())
+                return 0;
+            else
+                return 1;
+        }).collect(Collectors.toList());
     }
 }

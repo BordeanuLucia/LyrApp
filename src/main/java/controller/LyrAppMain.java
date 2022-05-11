@@ -22,14 +22,14 @@ public class LyrAppMain extends Application {
         primaryStage.centerOnScreen();
 
         FXMLLoader loadingLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\LoadingWindow.fxml"));
-        FXMLLoader mainLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\LyrAppInterface.fxml"));
+        FXMLLoader mainLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\LyrAppWindow.fxml"));
 
         Parent loadingRoot = loadingLoader.load();
         Scene loadingScene = new Scene(loadingRoot);
-        loadingScene.setCursor(Cursor.DEFAULT);
         primaryStage.setScene(loadingScene);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
+        loadingScene.setCursor(Cursor.DEFAULT);
 
         Platform.runLater(() -> {
             try {
@@ -40,6 +40,10 @@ public class LyrAppMain extends Application {
                 mainStage.centerOnScreen();
                 mainStage.setTitle("LyrApp");
                 mainStage.setScene(new Scene(mainRoot));
+                mainStage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
                 lyrAppController.configure();
                 primaryStage.close();
                 mainStage.show();
