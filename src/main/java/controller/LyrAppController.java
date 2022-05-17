@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,32 +15,34 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Song;
 import model.Strophe;
+import observer.Observable;
+import observer.Observer;
 import repository.IPlaylistsRepository;
 import repository.ISongsRepository;
 import repository.PlaylistsRepository;
 import repository.SongsRepository;
 import service.LyrAppService;
+import utils.Constants;
+import utils.UpdateType;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.List;
+import java.util.*;
 
-public class LyrAppController implements Initializable {
+public class LyrAppController implements Initializable, Observable {
     private static final LyrAppService lyrAppService;
-    private Screen currentScreen;
-    private ObservableList<Screen> allScreens;
-    private final List<LiveController> liveControllers = new ArrayList<>();
     private volatile boolean stopClock = false;
+    private final List<Observer> observersList = new ArrayList<>();
+    private boolean liveButtonClicked = false;
+    private static final double font = Constants.PREVIEW_TEXT_FONT;
 
     @FXML
     private TextField songSearchTextField;
@@ -77,13 +80,12 @@ public class LyrAppController implements Initializable {
             while (!stopClock) {
                 try {
                     Thread.sleep(1000);
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException ignored) {
+                }
                 String timeNow = sdf.format(new Date());
                 Platform.runLater(() -> {
                     hourLabel.setText(timeNow);
-                    for (LiveController liveController : liveControllers){
-                        liveController.setClockLabel(timeNow);
-                    }
+                    notifyObservers(UpdateType.SET_HOUR, timeNow);
                 });
             }
         });
@@ -95,9 +97,9 @@ public class LyrAppController implements Initializable {
         group.selectedToggleProperty().addListener((observableValue, oldToggle, newToggle) -> {
             if (group.getSelectedToggle() != null) {
                 RadioButton selectedAlignment = (RadioButton) group.getSelectedToggle();
-                Pos alignment = Pos.BASELINE_CENTER;
-                TextAlignment textAlignment = TextAlignment.CENTER;
-                switch (selectedAlignment.getId()){
+                Pos alignment;
+                TextAlignment textAlignment;
+                switch (selectedAlignment.getId()) {
                     case "upLeftButton":
                         alignment = Pos.TOP_LEFT;
                         textAlignment = TextAlignment.LEFT;
@@ -113,10 +115,6 @@ public class LyrAppController implements Initializable {
                     case "centerLeftButton":
                         alignment = Pos.CENTER_LEFT;
                         textAlignment = TextAlignment.LEFT;
-                        break;
-                    case "centerCenterButton":
-                        alignment = Pos.CENTER;
-                        textAlignment = TextAlignment.CENTER;
                         break;
                     case "centerRightButton":
                         alignment = Pos.CENTER_RIGHT;
@@ -134,11 +132,15 @@ public class LyrAppController implements Initializable {
                         alignment = Pos.BOTTOM_RIGHT;
                         textAlignment = TextAlignment.RIGHT;
                         break;
+                    default:
+                        alignment = Pos.CENTER;
+                        textAlignment = TextAlignment.CENTER;
+                        break;
                 }
                 textLabel.setAlignment(alignment);
                 textLabel.setTextAlignment(textAlignment);
-                for (LiveController liveController : liveControllers){
-                    liveController.setTextAlignment(alignment, textAlignment);
+                if (liveButtonClicked) {
+                    notifyObserversTextAlignment(alignment, textAlignment);
                 }
             }
         });
@@ -157,8 +159,14 @@ public class LyrAppController implements Initializable {
                 } else {
                     if (item.getTitle() == null || item.getTitle().strip().equals(""))
                         setText("No title");
-                    else
+                    else {
+                        setMinWidth(param.getWidth() - 2);
+                        setMaxWidth(param.getWidth() - 2);
+                        setPrefWidth(param.getWidth() - 2);
+                        setWrapText(true);
+                        setTextAlignment(TextAlignment.JUSTIFY);
                         setText(item.getTitle());
+                    }
                 }
             }
         });
@@ -177,21 +185,55 @@ public class LyrAppController implements Initializable {
                 if (empty || item == null || item.getText() == null || item.getText().strip().equals("")) {
                     setText(null);
                 } else {
+                    setMinWidth(param.getWidth() - 16);
+                    setMaxWidth(param.getWidth() - 16);
+                    setPrefWidth(param.getWidth() - 16);
+                    setWrapText(true);
+                    setTextAlignment(TextAlignment.JUSTIFY);
                     setText(item.getText());
                 }
             }
         });
         strophesListView.setOnMouseClicked(event -> {
             Strophe selectedStrophe = strophesListView.getSelectionModel().getSelectedItem();
-            textLabel.setText(selectedStrophe.getText());
-            for (LiveController liveController : liveControllers){
-                liveController.setTextLabel(selectedStrophe.getText());
+            setPreviewText(selectedStrophe.getText());
+            if (liveButtonClicked) {
+                notifyObservers(UpdateType.SET_TEXT, selectedStrophe.getText());
             }
         });
     }
 
-    public void configure(){
-        allScreens = Screen.getScreens();
+    private void setPreviewText(String text){
+        textLabel.setText(text);
+        textLabel.setFont(Font.font(font));
+        textLabel.setText(text);
+        int maxLines = Constants.MAX_NUMBER_OF_LINES_ON_SCREEN;
+        int nrLines = text.split("\n").length;
+        if (nrLines > maxLines) {
+            double newFont = (textLabel.getFont().getSize() * maxLines) / nrLines;
+            textLabel.setFont(Font.font(newFont));
+        }
+
+        double actualFont = textLabel.getFont().getSize();
+        double maxCharacters = (Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN * font) / actualFont;
+        int maxNrCharacters = 1;
+        Optional<Integer> optional = Arrays.stream(text.split("\n")).map(s -> s.toCharArray().length)
+                .reduce((integer1, integer2) -> {
+                    if (integer1 > integer2)
+                        return integer1;
+                    return integer2;
+                });
+        if (optional.isPresent())
+            maxNrCharacters = optional.get();
+        if (maxNrCharacters > maxCharacters) {
+            double newFont = (actualFont * maxCharacters) / maxNrCharacters;
+            textLabel.setFont(Font.font(newFont));
+        }
+    }
+
+    public void configureScreens() {
+        ObservableList<Screen> allScreens = Screen.getScreens();
+        Screen currentScreen = Screen.getPrimary();
         allScreens.addListener((ListChangeListener<Screen>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
@@ -203,22 +245,22 @@ public class LyrAppController implements Initializable {
                             try {
                                 createLiveSceneForScreen(addedScreen);
                                 break;
-                            } catch (IOException ignored) { }
+                            } catch (IOException ignored) {
+                            }
                         }
                     }
                 } else if (c.wasRemoved()) {
                     for (Screen removedScreen : c.getRemoved()) {
-                        for (LiveController liveController : liveControllers){
-                            if (liveController.getCurrentScreen().equals(removedScreen)){
+                        for (Observer liveController : observersList) {
+                            if (liveController.getCurrentScreen().equals(removedScreen)) {
                                 liveController.closeWindow();
-                                liveControllers.remove(liveController);
+                                observersList.remove(liveController);
                             }
                         }
                     }
                 }
             }
         });
-        currentScreen = Screen.getPrimary();
 
         if (allScreens.size() > 1) {
             try {
@@ -243,7 +285,7 @@ public class LyrAppController implements Initializable {
         Parent liveRoot = liveLoader.load();
         Scene liveScene = new Scene(liveRoot);
         LiveController liveController = liveLoader.getController();
-        liveControllers.add(liveController);
+        observersList.add(liveController);
         liveController.configure(screen);
 
         Rectangle2D bounds = screen.getVisualBounds();
@@ -258,13 +300,20 @@ public class LyrAppController implements Initializable {
     }
 
     @FXML
-    public void handleLiveButtonClicked(){
+    public void handleLiveButtonClicked() {
+        liveButtonClicked = !liveButtonClicked;
+        if (liveButtonClicked) {
+            notifyObservers(UpdateType.SET_TEXT, textLabel.getText());
+            notifyObserversTextAlignment(textLabel.getAlignment(), textLabel.getTextAlignment());
+        } else {
+            notifyObservers(UpdateType.SET_TEXT, "");
+        }
     }
 
     @FXML
-    public void searchKeyPressed(KeyEvent key){
+    public void searchKeyPressed(KeyEvent key) {
         String keyWords = songSearchTextField.getText().strip();
-        if (!key.getCode().equals(KeyCode.ENTER) || keyWords.equals(""))
+        if (!key.getCode().equals(KeyCode.ENTER))
             return;
         songsModel.setAll(lyrAppService.getFilteredSongs(keyWords));
     }
@@ -272,10 +321,76 @@ public class LyrAppController implements Initializable {
     @FXML
     public void clockButtonClicked() {
         hourLabel.setVisible(!hourLabel.isVisible());
-        for (LiveController liveController : liveControllers){
-            liveController.setClockVisibility(hourLabel.isVisible());
+        notifyObserversHourVisibility(hourLabel.isVisible());
+    }
+
+    @FXML
+    public void handleDeleteButtonClicked(ActionEvent actionEvent) {
+        Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
+        if (selectedSong != null){
+            openConfirmationWindow(selectedSong);
+        } else
+            System.out.println("nothing");
+    }
+
+    private void openConfirmationWindow(Song selectedSong){
+        try {
+            FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\ConfirmationWindow.fxml"));
+            Parent confirmationRoot = confirmationLoader.load();
+            Scene confirmationScene = new Scene(confirmationRoot);
+            ConfirmationController confirmationController = confirmationLoader.getController();
+
+            Stage confirmationStage = new Stage();
+            confirmationStage.centerOnScreen();
+            confirmationStage.setScene(confirmationScene);
+            confirmationController.configure(selectedSong, lyrAppService, confirmationStage);
+            confirmationStage.show();
+        } catch (Exception ignored){}
+    }
+
+    @FXML
+    public void handleUpdateButtonClicked(ActionEvent actionEvent) {
+
+    }
+
+    public void close() {
+        stopClock = true;
+    }
+
+    @Override
+    public void addObserver(Observer observer) { observersList.add(observer); }
+
+    @Override
+    public void removeObserver(Observer observer) { observersList.remove(observer); }
+
+    @Override
+    public void notifyObservers(UpdateType updateType, String text) {
+        for (Observer observer : observersList) {
+            switch (updateType) {
+                case SET_HOUR -> observer.setHours(text);
+                case SET_TEXT -> observer.setText(text);
+            }
         }
     }
 
-    public void close() { stopClock = true; }
+    @Override
+    public void notifyObserversTextAlignment(Pos textAlignment, TextAlignment alignment) {
+        for (Observer observer : observersList) {
+            observer.setTextAlignment(textAlignment, alignment);
+        }
+    }
+
+    @Override
+    public void notifyObserversHourVisibility(boolean visibility) {
+        for (Observer observer : observersList) {
+            observer.setClockVisibility(visibility);
+        }
+    }
+
+    @Override
+    public void notifyObserversToClose() {
+        for (Observer observer : observersList) {
+            observer.closeWindow();
+        }
+    }
 }

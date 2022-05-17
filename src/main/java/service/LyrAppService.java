@@ -5,6 +5,7 @@ import repository.IPlaylistsRepository;
 import repository.ISongsRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public class LyrAppService implements ILyrAppService{
     private final ISongsRepository songsRepository;
@@ -16,10 +17,18 @@ public class LyrAppService implements ILyrAppService{
     }
 
     @Override
-    public List<Song> getFilteredSongs(String keyWords) {
+    public Set<Song> getFilteredSongs(String keyWords) {
         return songsRepository.getSongsByKeyWords(keyWords);
     }
 
     @Override
     public List<Song> getAllSongs() { return (List<Song>) songsRepository.getAll(); }
+
+    @Override
+    public void deleteSong(Song song) { songsRepository.delete(song.getId()); }
+
+    @Override
+    public void addSong(Song song) {
+        songsRepository.save(song);
+    }
 }

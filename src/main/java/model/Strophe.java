@@ -14,10 +14,10 @@ public class Strophe {
     public Strophe() {
     }
 
-    public Strophe(Long position, String text, Long songId) {
+    public Strophe(Long position, String text) {
         this.position = position;
         this.text = text;
-        this.songId = songId;
+//        this.songId = songId;
     }
 
     public Long getId() {

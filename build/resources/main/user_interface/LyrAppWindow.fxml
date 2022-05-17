@@ -14,33 +14,33 @@
    <children>
       <TextField fx:id="songSearchTextField" layoutX="14.0" layoutY="354.0" onKeyPressed="#searchKeyPressed" prefHeight="34.0" prefWidth="268.0" promptText="caută melodie" />
       <ListView fx:id="songsListView" layoutX="14.0" layoutY="389.0" prefHeight="256.0" prefWidth="268.0" />
-      <Button fx:id="liveButton" layoutX="772.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleLiveButtonClicked" text="Live" />
-      <ListView fx:id="strophesListView" layoutX="14.0" layoutY="42.0" prefHeight="300.0" prefWidth="268.0" />
-      <Label fx:id="titleLabel" layoutX="15.0" layoutY="15.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="268.0" prefHeight="27.0" prefWidth="268.0">
+      <Button fx:id="liveButton" layoutX="772.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleLiveButtonClicked" text="Live" />
+      <ListView fx:id="strophesListView" layoutX="14.0" layoutY="35.0" prefHeight="307.0" prefWidth="268.0" />
+      <Label fx:id="titleLabel" layoutX="15.0" layoutY="9.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="268.0" prefHeight="27.0" prefWidth="268.0">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Pane layoutX="298.0" layoutY="42.0" prefHeight="300.0" prefWidth="346.0" style="-fx-background-color: black;">
+      <Pane layoutX="298.0" layoutY="35.0" prefHeight="307.0" prefWidth="503.0" style="-fx-background-color: black;">
          <children>
-            <Label fx:id="hourLabel" layoutX="141.0" layoutY="264.0" text="00:00" textFill="WHITE">
+            <Label fx:id="hourLabel" layoutX="227.0" layoutY="270.0" text="00:00" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Label fx:id="textLabel" alignment="CENTER" layoutX="6.0" layoutY="14.0" prefHeight="256.0" prefWidth="334.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Label fx:id="textLabel" alignment="CENTER" layoutX="6.0" layoutY="5.0" prefHeight="265.0" prefWidth="491.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
-                  <Font size="14.0" />
+                  <Font size="25.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Label layoutX="299.0" layoutY="15.0" text="Previzualizare">
+      <Label layoutX="299.0" layoutY="8.0" text="Previzualizare">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Pane layoutX="668.0" layoutY="157.0" prefHeight="82.0" prefWidth="80.0">
+      <Pane layoutX="431.0" layoutY="354.0" prefHeight="82.0" prefWidth="80.0">
          <children>
             <RadioButton fx:id="upLeftButton" layoutX="6.0" layoutY="5.0" mnemonicParsing="false">
                <toggleGroup>
@@ -57,6 +57,12 @@
             <RadioButton fx:id="downRightButton" layoutX="54.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
          </children>
       </Pane>
-      <Button fx:id="clockButton" layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#clockButtonClicked" text="Ceas" />
+      <Button fx:id="clockButton" layoutX="816.0" layoutY="7.0" mnemonicParsing="false" onAction="#clockButtonClicked" text="Ceas" />
+      <Pane layoutX="283.0" layoutY="389.0" prefHeight="256.0" prefWidth="42.0">
+         <children>
+            <Button fx:id="deleteButton" layoutY="34.0" mnemonicParsing="false" onAction="#handleDeleteButtonClicked" prefHeight="25.0" prefWidth="42.0" text="Del" />
+            <Button fx:id="updateButton" layoutX="1.0" layoutY="83.0" mnemonicParsing="false" onAction="#handleUpdateButtonClicked" text="Mod" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

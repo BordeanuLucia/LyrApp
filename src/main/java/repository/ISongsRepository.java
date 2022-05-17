@@ -1,8 +1,8 @@
 package repository;
 
 import model.Song;
-import java.util.List;
+import java.util.Set;
 
 public interface ISongsRepository extends IRepository<Song> {
-    List<Song> getSongsByKeyWords(String keyWords);
+    Set<Song> getSongsByKeyWords(String keyWords);
 }

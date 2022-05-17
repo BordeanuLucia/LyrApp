@@ -43,6 +43,15 @@ public class Song {
         this.lyrics = lyrics;
     }
 
+    public String getText(){
+        StringBuilder text = new StringBuilder();
+        for (Strophe strophe : lyrics){
+            text.append(strophe.getText());
+            text.append("\n");
+        }
+        return text.toString();
+    }
+
     @Override
     public String toString() {
         return "Song{" +

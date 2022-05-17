@@ -1,11 +1,16 @@
 package repository;
 
 import model.Song;
+import model.Strophe;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SongsRepository extends AbstractHibernateRepository<Song> implements ISongsRepository{
     @Override
@@ -20,17 +25,27 @@ public class SongsRepository extends AbstractHibernateRepository<Song> implement
     }
 
     @Override
-    public List<Song> getSongsByKeyWords(String keyWords) {
+    public Set<Song> getSongsByKeyWords(String keyWords) {
         Transaction transaction = null;
-        List<Song> result = null;
+        Set<Song> result = new HashSet<>();
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            result = session.createQuery("from Song where title like '" + keyWords + "%'", Song.class).list();
+            result = new HashSet<>(session.createQuery("from Song where title like '" + keyWords + "%'", Song.class).list());
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null)
                 transaction.rollback();
         }
+//        Set<Song> result2 = new HashSet<>();
+//        try (Session session = sessionFactory.openSession()) {
+//            transaction = session.beginTransaction();
+//            result2 = new HashSet<>(session.createQuery("from Strophe where text like '" + keyWords + "%'", Strophe.class).list());
+//            transaction.commit();
+//        } catch (Exception e) {
+//            if (transaction != null)
+//                transaction.rollback();
+//        }
+//        result.addAll(result2);
         return result;
     }
 }

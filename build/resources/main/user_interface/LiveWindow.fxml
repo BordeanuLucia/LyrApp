@@ -11,9 +11,10 @@
             <Font name="System Bold" size="72.0" />
          </font>
       </Label>
-      <Label fx:id="textLabel" alignment="CENTER" layoutX="14.0" layoutY="11.0" prefHeight="494.0" prefWidth="698.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="textLabel" alignment="CENTER" layoutX="14.0" layoutY="11.0" prefHeight="494.0" prefWidth="698.0" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="36.0" />
-         </font></Label>
+            <Font size="72.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
