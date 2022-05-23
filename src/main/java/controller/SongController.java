@@ -5,11 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import model.Song;
 import model.Strophe;
 import service.ILyrAppService;
 import utils.SongWindowType;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -24,6 +26,8 @@ public class SongController implements Initializable {
     private TextField titleTextField;
     @FXML
     private TextArea textTextArea;
+    @FXML
+    private AnchorPane anchorPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

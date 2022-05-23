@@ -45,7 +45,7 @@ public class LyrAppMain extends Application {
                     Platform.exit();
                     System.exit(0);
                 });
-                lyrAppController.configureScreens();
+                lyrAppController.configure(mainStage);
                 primaryStage.close();
                 mainStage.show();
             } catch (IOException exception) {

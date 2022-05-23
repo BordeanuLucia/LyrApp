@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -34,6 +32,7 @@ import utils.UpdateType;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,7 +41,8 @@ public class LyrAppController implements Initializable, Observable {
     private volatile boolean stopClock = false;
     private final List<Observer> observersList = new ArrayList<>();
     private boolean liveButtonClicked = false;
-    private static final double font = Constants.PREVIEW_TEXT_FONT;
+    private static final double FONT = Constants.PREVIEW_TEXT_FONT;
+    private Stage currentStage;
 
     @FXML
     private TextField songSearchTextField;
@@ -72,6 +72,11 @@ public class LyrAppController implements Initializable, Observable {
         initializeListViews();
         initializeRadioButtons();
         initializeClock();
+    }
+
+    public void configure(Stage mainStage) {
+        this.currentStage = mainStage;
+        configureScreens();
     }
 
     private void initializeClock() {
@@ -203,32 +208,9 @@ public class LyrAppController implements Initializable, Observable {
         });
     }
 
-    private void setPreviewText(String text){
+    private void setPreviewText(String text) {
         textLabel.setText(text);
-        textLabel.setFont(Font.font(font));
-        textLabel.setText(text);
-        int maxLines = Constants.MAX_NUMBER_OF_LINES_ON_SCREEN;
-        int nrLines = text.split("\n").length;
-        if (nrLines > maxLines) {
-            double newFont = (textLabel.getFont().getSize() * maxLines) / nrLines;
-            textLabel.setFont(Font.font(newFont));
-        }
-
-        double actualFont = textLabel.getFont().getSize();
-        double maxCharacters = (Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN * font) / actualFont;
-        int maxNrCharacters = 1;
-        Optional<Integer> optional = Arrays.stream(text.split("\n")).map(s -> s.toCharArray().length)
-                .reduce((integer1, integer2) -> {
-                    if (integer1 > integer2)
-                        return integer1;
-                    return integer2;
-                });
-        if (optional.isPresent())
-            maxNrCharacters = optional.get();
-        if (maxNrCharacters > maxCharacters) {
-            double newFont = (actualFont * maxCharacters) / maxNrCharacters;
-            textLabel.setFont(Font.font(newFont));
-        }
+        Constants.autoresizeText(text, textLabel, FONT);
     }
 
     public void configureScreens() {
@@ -325,15 +307,14 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
-    public void handleDeleteButtonClicked(ActionEvent actionEvent) {
+    public void handleDeleteButtonClicked() {
         Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
-        if (selectedSong != null){
+        if (selectedSong != null) {
             openConfirmationWindow(selectedSong);
-        } else
-            System.out.println("nothing");
+        }
     }
 
-    private void openConfirmationWindow(Song selectedSong){
+    private void openConfirmationWindow(Song selectedSong) {
         try {
             FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\ConfirmationWindow.fxml"));
             Parent confirmationRoot = confirmationLoader.load();
@@ -345,12 +326,13 @@ public class LyrAppController implements Initializable, Observable {
             confirmationStage.setScene(confirmationScene);
             confirmationController.configure(selectedSong, lyrAppService, confirmationStage);
             confirmationStage.show();
-        } catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
     }
 
     @FXML
-    public void handleUpdateButtonClicked(ActionEvent actionEvent) {
-
+    public void handleUpdateButtonClicked() {
+        // in the future
     }
 
     public void close() {
@@ -358,10 +340,14 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @Override
-    public void addObserver(Observer observer) { observersList.add(observer); }
+    public void addObserver(Observer observer) {
+        observersList.add(observer);
+    }
 
     @Override
-    public void removeObserver(Observer observer) { observersList.remove(observer); }
+    public void removeObserver(Observer observer) {
+        observersList.remove(observer);
+    }
 
     @Override
     public void notifyObservers(UpdateType updateType, String text) {
@@ -391,6 +377,34 @@ public class LyrAppController implements Initializable, Observable {
     public void notifyObserversToClose() {
         for (Observer observer : observersList) {
             observer.closeWindow();
+        }
+    }
+
+    public void handleSearchSongOnlineButtonClicked() {
+        try {
+            URL u = new URL(Constants.URL_TO_CHECK_INTERNET_CONNECTION);
+            URLConnection conn = u.openConnection();
+            conn.connect();
+            Constants.runSearchSongRobot(songSearchTextField.getText().strip());
+        } catch (Exception e) {
+            this.showSomethingWentWrongWindow(Constants.NO_INTERNET_CONNECTION_STRING);
+            e.printStackTrace();
+        }
+    }
+
+    private void showSomethingWentWrongWindow(String warningText) {
+        try {
+            Stage stage = new Stage();
+            stage.centerOnScreen();
+            FXMLLoader loadingLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\WarningWindow.fxml"));
+            Parent loadingRoot = loadingLoader.load();
+            Scene loadingScene = new Scene(loadingRoot);
+            stage.setScene(loadingScene);
+            WarningController warningController = loadingLoader.getController();
+            warningController.configure(loadingRoot, stage, currentStage, warningText);
+            stage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }
