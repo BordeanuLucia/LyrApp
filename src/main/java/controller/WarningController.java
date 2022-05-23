@@ -35,7 +35,6 @@ public class WarningController implements Initializable {
 
     private void configureWindow(){
         this.currentStage.initStyle(StageStyle.UNDECORATED);
-        this.currentStage.setResizable(false);
         currentStage.initOwner(previousStage);
         currentStage.initModality(Modality.WINDOW_MODAL);
 

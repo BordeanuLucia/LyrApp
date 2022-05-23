@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,8 +13,10 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -60,6 +63,8 @@ public class LyrAppController implements Initializable, Observable {
     private RadioButton upLeftButton;
     @FXML
     private Label hourLabel;
+    @FXML
+    private ImageView runRobotImageView;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -72,6 +77,32 @@ public class LyrAppController implements Initializable, Observable {
         initializeListViews();
         initializeRadioButtons();
         initializeClock();
+
+        runRobotImageView.setOnMouseClicked(new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String songTitle = songSearchTextField.getText().strip();
+                if (songTitle.equals("")) {
+                    Thread borderColorFades = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            songSearchTextField.setStyle("-fx-border-color: red");
+                            try {
+                                synchronized (this) {
+                                    wait(3000);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            songSearchTextField.setStyle("-fx-border-color: transparent");
+                        }
+                    });
+                    borderColorFades.start();
+                } else {
+                    handleSearchSongOnlineButtonClicked();
+                }
+            }
+        });
     }
 
     public void configure(Stage mainStage) {

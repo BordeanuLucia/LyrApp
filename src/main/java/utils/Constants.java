@@ -59,8 +59,9 @@ public class Constants {
     }
 
     public static void runSearchSongRobot(String songTitle){
+        String inputArguments = " --input \"{'inArg' : 'value' , 'String' : '"+ songTitle +"'}\"";
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", ROBOT_RUN_COMMAND);
+                "cmd.exe", "/c", ROBOT_RUN_COMMAND + inputArguments);
         builder.redirectErrorStream(true);
         builder.directory(new File(ROBOT_EXEC_DIR));
         try {
