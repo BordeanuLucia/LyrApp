@@ -49,3 +49,15 @@ Y
 )src/main/java/service/ILyrAppService.java,8\a\8a558f1e149f9fab19f3eae1a031a1c8130a2403
 d
 4src/main/java/controller/ConfirmationController.java,b\c\bc3fda5601070afa8b548fd11c9767d8c16cd384
+\
+,src/main/java/controller/SongController.java,d\2\d218788cd9d13037348494fa820723cc9de265e3
+\
+,src/main/java/controller/LiveController.java,1\8\18c280b930aca46a6c3fcf7c60d2fcf3c198552c
+X
+(src/main/java/controller/LyrAppMain.java,f\2\f2eb4bd9aca0eac606e5d242759166543d526779
+_
+/src/main/java/controller/WarningController.java,1\3\13a2ec97928f845677907ca7e1f56a0ff7fb176a
+^
+.src/main/java/controller/LyrAppController.java,9\c\9c1a6075355917aa56847ada010094dbb17bff73
+R
+"src/main/java/utils/Constants.java,4\f\4f7a6c7079cf4b2ff19d6787f3f02ddcd18c4121

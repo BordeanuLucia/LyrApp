@@ -1,0 +1,21 @@
+
+t
+java:S2142^"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(”ı¾
+U
+java:S2274\":Remove this call to "wait" or move it into a "while" loop.(¦¨‹ùÿÿÿÿ
+y
+java:S2142w"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(®ûºöÿÿÿÿÿ
+C	java:S108w")Either remove or fill this block of code.(®ûºöÿÿÿÿÿ
+n
+java:S3776¹"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‰ı€“üÿÿÿÿ
+i
+java:S3776÷"RRefactor this method to reduce its Cognitive Complexity from 47 to the 15 allowed.(ª“•ı
+>	java:S108…")Either remove or fill this block of code.(”ã‰G
+D	java:S108è")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+g	java:S117ı"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ş¡™
+C
+java:S1604Q"(Make this anonymous inner class a lambda(ëü’–ÿÿÿÿÿ
+g
+java:S1301‚"KReplace this "switch" statement by "if" statements to increase readability.(ìÜËíøÿÿÿÿ
+W	java:S110½"<This class has 9 parents which is greater than 5 authorized.(¹Ùøîúÿÿÿÿ
+W	java:S110Ù"<This class has 9 parents which is greater than 5 authorized.(‚ÊŒÃşÿÿÿÿ
