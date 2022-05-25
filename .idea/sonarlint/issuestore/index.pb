@@ -17,14 +17,10 @@ Y
 )src/main/java/repository/IRepository.java,d\b\db4df2df3eb2b243efe80aeb3fa1810f67ca7e3e
 X
 (src/main/java/utils/LyrAppException.java,d\3\d3830d5800a59f142fd353f1fdc43dece922f713
-T
-$src/main/java/observer/Observer.java,0\e\0e9b6271a6b42faa2ae9e71f15ddc7ba079437f6
 X
 (src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
 S
 #src/main/java/utils/UpdateType.java,2\1\21ed65d68e12511175c0a07c6cf20a5ae055aa0b
-V
-&src/main/java/observer/Observable.java,2\5\259b685b9cab8c8703b43b9a8977b0f980d71325
 W
 'src/main/java/utils/SongWindowType.java,6\d\6dc6e38bc689fedc3afc2515736de363dc3e4d88
 P

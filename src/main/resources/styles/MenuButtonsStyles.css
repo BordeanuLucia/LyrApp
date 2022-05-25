@@ -2,3 +2,8 @@
     -fx-border-color: WHITE;
     -fx-border-width: 0px 0px 0px 5px;
 }
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: #213242;
+    -fx-background-insets: 0;
+}

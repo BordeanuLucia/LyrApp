@@ -10,5 +10,6 @@ public interface Observable {
     void notifyObservers(UpdateType updateType, String text);
     void notifyObserversTextAlignment(Pos textAlignment, TextAlignment alignment);
     void notifyObserversHourVisibility(boolean visibility);
+    void notifyTextFormat(boolean isBold, boolean isItalic, boolean isUnderlined);
     void notifyObserversToClose();
 }

@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -90,6 +93,12 @@ public class LyrAppController implements Initializable, Observable {
     private Label deleteLabel;
     @FXML
     private Label browseLabel;
+    @FXML
+    private ToggleButton boldButton;
+    @FXML
+    private ToggleButton italicButton;
+    @FXML
+    private ToggleButton underlineButton;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -104,6 +113,7 @@ public class LyrAppController implements Initializable, Observable {
         initializeRadioButtons();
         initializeClock();
 
+        boldButton.setSelected(true);
         clockButton.setStyle(MENU_BUTTON_CLICKED_STYLE);
 
         Image image1 = new Image("file:src/main/resources/pictures/Icons/delete.png");
@@ -120,26 +130,26 @@ public class LyrAppController implements Initializable, Observable {
         Image image3 = new Image("file:src/main/resources/pictures/Icons/search-engine.png");
         runRobotImageView.setImage(image3);
         runRobotImageView.setOnMouseClicked(event -> {
-                String songTitle = songSearchTextField.getText().strip();
-                if (songTitle.equals("")) {
-                    Thread borderColorFades = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            songSearchTextField.setStyle("-fx-border-color: red");
-                            try {
-                                synchronized (this) {
-                                    wait(3000);
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
+            String songTitle = songSearchTextField.getText().strip();
+            if (songTitle.equals("")) {
+                Thread borderColorFades = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        songSearchTextField.setStyle("-fx-border-color: red");
+                        try {
+                            synchronized (this) {
+                                wait(3000);
                             }
-                            songSearchTextField.setStyle("-fx-border-color: transparent");
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
-                    borderColorFades.start();
-                } else {
-                    handleSearchSongOnlineButtonClicked();
-                }
+                        songSearchTextField.setStyle("-fx-border-color: transparent");
+                    }
+                });
+                borderColorFades.start();
+            } else {
+                handleSearchSongOnlineButtonClicked();
+            }
         });
         runRobotImageView.setOnMouseEntered(event -> browseLabel.setVisible(true));
         runRobotImageView.setOnMouseExited(event -> browseLabel.setVisible(false));
@@ -156,7 +166,7 @@ public class LyrAppController implements Initializable, Observable {
         configureScreens();
     }
 
-    private void initializePlaylistListView(){
+    private void initializePlaylistListView() {
         playlistModel.setAll(lyrAppService.getAllPlaylists());
         playlistListView.setItems(playlistModel);
         playlistListView.getSelectionModel().select(-1);
@@ -285,7 +295,7 @@ public class LyrAppController implements Initializable, Observable {
         });
 
         songsListView.setOnMouseClicked(event -> {
-            if (!updateImageView.isVisible()){
+            if (!updateImageView.isVisible()) {
                 updateImageView.setVisible(true);
                 deleteImageView.setVisible(true);
             }
@@ -511,6 +521,13 @@ public class LyrAppController implements Initializable, Observable {
         }
     }
 
+    @Override
+    public void notifyTextFormat(boolean isBold, boolean isItalic, boolean isUnderlined) {
+        for (Observer observer : observersList) {
+            observer.formatText(isBold, isItalic, isUnderlined);
+        }
+    }
+
     public void handleSearchSongOnlineButtonClicked() {
         try {
             URL u = new URL(Constants.URL_TO_CHECK_INTERNET_CONNECTION);
@@ -537,5 +554,47 @@ public class LyrAppController implements Initializable, Observable {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    @FXML
+    public void boldButtonClicked() {
+        if (boldButton.isSelected()) {
+            if (italicButton.isSelected()) {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, textLabel.getFont().getSize()));
+            } else {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.BOLD, FontPosture.REGULAR, textLabel.getFont().getSize()));
+            }
+        } else {
+            if (italicButton.isSelected()) {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.NORMAL, FontPosture.ITALIC, textLabel.getFont().getSize()));
+            } else {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.NORMAL, FontPosture.REGULAR, textLabel.getFont().getSize()));
+            }
+        }
+        notifyTextFormat(boldButton.isSelected(), italicButton.isSelected(), underlineButton.isSelected());
+    }
+
+    @FXML
+    public void italicButtonClicked() {
+        if (italicButton.isSelected()) {
+            if (boldButton.isSelected()) {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.BOLD, FontPosture.ITALIC, textLabel.getFont().getSize()));
+            } else {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.NORMAL, FontPosture.ITALIC, textLabel.getFont().getSize()));
+            }
+        } else {
+            if (boldButton.isSelected()) {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.BOLD, FontPosture.REGULAR, textLabel.getFont().getSize()));
+            } else {
+                textLabel.setFont(Font.font(textLabel.getFont().getFamily(), FontWeight.NORMAL, FontPosture.REGULAR, textLabel.getFont().getSize()));
+            }
+        }
+        notifyTextFormat(boldButton.isSelected(), italicButton.isSelected(), underlineButton.isSelected());
+    }
+
+    @FXML
+    public void underlineButtonClicked() {
+        textLabel.setUnderline(underlineButton.isSelected());
+        notifyTextFormat(boldButton.isSelected(), italicButton.isSelected(), underlineButton.isSelected());
     }
 }
