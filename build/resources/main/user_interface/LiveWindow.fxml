@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="mainAnchorPane" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LiveController">
    <children>
-      <Label fx:id="hourLabel" alignment="CENTER" layoutX="263.0" layoutY="409.0" prefHeight="70.0" prefWidth="186.0" text="00:00" textFill="WHITE" wrapText="true">
+      <Label fx:id="hourLabel" alignment="CENTER" layoutX="263.0" layoutY="409.0" prefHeight="70.0" prefWidth="186.0" style="-fx-background-color: transparent;" text="00:00" textFill="WHITE" wrapText="true">
          <font>
             <Font name="System Bold" size="72.0" />
          </font>

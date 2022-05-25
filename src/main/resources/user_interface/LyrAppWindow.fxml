@@ -26,9 +26,9 @@
          </font></TextField>
       <ListView fx:id="songsListView" layoutX="125.0" layoutY="388.0" prefHeight="256.0" prefWidth="268.0" stylesheets="@../styles/MenuButtonsStyles.css" />
       <ListView fx:id="strophesListView" layoutX="125.0" layoutY="35.0" prefHeight="307.0" prefWidth="268.0" stylesheets="@../styles/MenuButtonsStyles.css" />
-      <Label fx:id="titleLabel" layoutX="126.0" layoutY="9.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="268.0" prefHeight="27.0" prefWidth="268.0">
+      <Label fx:id="titleLabel" layoutX="126.0" layoutY="9.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="205.0" prefHeight="27.0" prefWidth="224.0">
          <font>
-            <Font name="System Bold Italic" size="18.0" />
+            <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
       <Pane layoutX="409.0" layoutY="35.0" prefHeight="307.0" prefWidth="503.0" style="-fx-background-color: black;">
@@ -65,12 +65,6 @@
             <RadioButton fx:id="upRightButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" toggleGroup="$alignment" />
             <RadioButton fx:id="downCenterButton" layoutX="29.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
             <RadioButton fx:id="downRightButton" layoutX="54.0" layoutY="56.0" mnemonicParsing="false" toggleGroup="$alignment" />
-         </children>
-      </Pane>
-      <Pane layoutX="394.0" layoutY="389.0" prefHeight="256.0" prefWidth="42.0">
-         <children>
-            <Button fx:id="deleteButton" layoutY="34.0" mnemonicParsing="false" onAction="#handleDeleteButtonClicked" prefHeight="25.0" prefWidth="42.0" text="Del" />
-            <Button fx:id="updateButton" layoutX="1.0" layoutY="83.0" mnemonicParsing="false" onAction="#handleUpdateButtonClicked" text="Mod" />
          </children>
       </Pane>
       <ImageView fx:id="runRobotImageView" fitHeight="34.0" fitWidth="28.0" layoutX="360.0" layoutY="357.0" pickOnBounds="true" preserveRatio="true">
@@ -150,5 +144,24 @@
             <Font size="15.0" />
          </font>
       </TextField>
+      <ImageView fx:id="updateImageView" fitHeight="19.0" fitWidth="28.0" layoutX="352.0" layoutY="12.0" onMouseClicked="#handleUpdateButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../pictures/Icons/edit.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="deleteImageView" fitHeight="19.0" fitWidth="26.0" layoutX="374.0" layoutY="12.0" onMouseClicked="#handleDeleteButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../pictures/Icons/delete.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Label fx:id="updateLabel" layoutX="336.0" layoutY="36.0" style="-fx-background-color: white;" text="Modifică" visible="false" />
+      <Label fx:id="deleteLabel" layoutX="365.0" layoutY="36.0" style="-fx-background-color: white;" text="Șterge" visible="false" />
+      <Label fx:id="browseLabel" layoutX="354.0" layoutY="388.0" style="-fx-background-color: white;" text="browse" visible="false" />
    </children>
 </AnchorPane>

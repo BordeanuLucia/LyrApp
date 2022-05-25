@@ -80,8 +80,8 @@ public class LiveController implements Initializable, Observer {
 
     @Override
     public void setText(String text) {
-        int numberLines = (int)(screenHeight * Constants.MAX_NUMBER_OF_LINES_ON_SCREEN / Constants.DISPLAY_HEIGHT);
-        int numberOfCharacters = (int)(screenWidth * Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN / Constants.DISPLAY_WIDTH);
+        int numberLines = (int)Math.round(screenHeight * Constants.MAX_NUMBER_OF_LINES_ON_SCREEN / Constants.DISPLAY_HEIGHT);
+        int numberOfCharacters = (int)Math.round(screenWidth * Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN / Constants.DISPLAY_WIDTH);
         Constants.autoresizeText(text, textLabel, numberLines, numberOfCharacters);
     }
 

@@ -1,9 +1,11 @@
 package controller;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
@@ -77,6 +80,16 @@ public class LyrAppController implements Initializable, Observable {
     @FXML
     private ListView<Playlist> playlistListView;
     ObservableList<Playlist> playlistModel = FXCollections.observableArrayList();
+    @FXML
+    private ImageView updateImageView;
+    @FXML
+    private ImageView deleteImageView;
+    @FXML
+    private Label updateLabel;
+    @FXML
+    private Label deleteLabel;
+    @FXML
+    private Label browseLabel;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -93,8 +106,19 @@ public class LyrAppController implements Initializable, Observable {
 
         clockButton.setStyle(MENU_BUTTON_CLICKED_STYLE);
 
-        Image image = new Image("file:src/main/resources/pictures/Icons/search-engine.png");
-        runRobotImageView.setImage(image);
+        Image image1 = new Image("file:src/main/resources/pictures/Icons/delete.png");
+        deleteImageView.setImage(image1);
+        deleteImageView.setVisible(false);
+        deleteImageView.setOnMouseEntered(event -> deleteLabel.setVisible(true));
+        deleteImageView.setOnMouseExited(event -> deleteLabel.setVisible(false));
+        Image image2 = new Image("file:src/main/resources/pictures/Icons/edit.png");
+        updateImageView.setImage(image2);
+        updateImageView.setVisible(false);
+        updateImageView.setOnMouseEntered(event -> updateLabel.setVisible(true));
+        updateImageView.setOnMouseExited(event -> updateLabel.setVisible(false));
+
+        Image image3 = new Image("file:src/main/resources/pictures/Icons/search-engine.png");
+        runRobotImageView.setImage(image3);
         runRobotImageView.setOnMouseClicked(event -> {
                 String songTitle = songSearchTextField.getText().strip();
                 if (songTitle.equals("")) {
@@ -117,6 +141,8 @@ public class LyrAppController implements Initializable, Observable {
                     handleSearchSongOnlineButtonClicked();
                 }
         });
+        runRobotImageView.setOnMouseEntered(event -> browseLabel.setVisible(true));
+        runRobotImageView.setOnMouseExited(event -> browseLabel.setVisible(false));
 
         exitButton.setOnMouseClicked(event -> {
             close();
@@ -259,6 +285,10 @@ public class LyrAppController implements Initializable, Observable {
         });
 
         songsListView.setOnMouseClicked(event -> {
+            if (!updateImageView.isVisible()){
+                updateImageView.setVisible(true);
+                deleteImageView.setVisible(true);
+            }
             Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
             titleLabel.setText(selectedSong.getTitle());
             strophesModel.setAll(selectedSong.getOrderedLyrics());
