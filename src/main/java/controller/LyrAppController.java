@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,14 +12,16 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Playlist;
 import model.Song;
 import model.Strophe;
 import observer.Observable;
@@ -44,8 +45,8 @@ public class LyrAppController implements Initializable, Observable {
     private volatile boolean stopClock = false;
     private final List<Observer> observersList = new ArrayList<>();
     private boolean liveButtonClicked = false;
-    private static final double FONT = Constants.PREVIEW_TEXT_FONT;
     private Stage currentStage;
+    private static final String MENU_BUTTON_CLICKED_STYLE = "-fx-border-color: WHITE; -fx-border-width: 0px 0px 0px 5px; -fx-base: #34526c";
 
     @FXML
     private TextField songSearchTextField;
@@ -65,6 +66,17 @@ public class LyrAppController implements Initializable, Observable {
     private Label hourLabel;
     @FXML
     private ImageView runRobotImageView;
+    @FXML
+    private Button liveButton;
+    @FXML
+    private Button clockButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private TextField playlistSearchTextField;
+    @FXML
+    private ListView<Playlist> playlistListView;
+    ObservableList<Playlist> playlistModel = FXCollections.observableArrayList();
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -75,12 +87,15 @@ public class LyrAppController implements Initializable, Observable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeListViews();
+        initializePlaylistListView();
         initializeRadioButtons();
         initializeClock();
 
-        runRobotImageView.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
+        clockButton.setStyle(MENU_BUTTON_CLICKED_STYLE);
+
+        Image image = new Image("file:src/main/resources/pictures/Icons/search-engine.png");
+        runRobotImageView.setImage(image);
+        runRobotImageView.setOnMouseClicked(event -> {
                 String songTitle = songSearchTextField.getText().strip();
                 if (songTitle.equals("")) {
                     Thread borderColorFades = new Thread(new Runnable() {
@@ -101,13 +116,49 @@ public class LyrAppController implements Initializable, Observable {
                 } else {
                     handleSearchSongOnlineButtonClicked();
                 }
-            }
+        });
+
+        exitButton.setOnMouseClicked(event -> {
+            close();
+            Platform.exit();
+            System.exit(0);
         });
     }
 
     public void configure(Stage mainStage) {
         this.currentStage = mainStage;
         configureScreens();
+    }
+
+    private void initializePlaylistListView(){
+        playlistModel.setAll(lyrAppService.getAllPlaylists());
+        playlistListView.setItems(playlistModel);
+        playlistListView.getSelectionModel().select(-1);
+        playlistListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Playlist item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    if (item.getTitle() == null || item.getTitle().strip().equals(""))
+                        setText("No title");
+                    else {
+                        setMinWidth(param.getWidth() - 2);
+                        setMaxWidth(param.getWidth() - 2);
+                        setPrefWidth(param.getWidth() - 2);
+                        setWrapText(true);
+                        setText(item.getTitle());
+                        setFont(Font.font(15));
+                    }
+                }
+            }
+        });
+
+        playlistListView.setOnMouseClicked(event -> {
+            Playlist selectedSong = playlistListView.getSelectionModel().getSelectedItem();
+            songsModel.setAll(selectedSong.getSongs());
+        });
     }
 
     private void initializeClock() {
@@ -200,12 +251,13 @@ public class LyrAppController implements Initializable, Observable {
                         setMaxWidth(param.getWidth() - 2);
                         setPrefWidth(param.getWidth() - 2);
                         setWrapText(true);
-                        setTextAlignment(TextAlignment.JUSTIFY);
                         setText(item.getTitle());
+                        setFont(Font.font(15));
                     }
                 }
             }
         });
+
         songsListView.setOnMouseClicked(event -> {
             Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
             titleLabel.setText(selectedSong.getTitle());
@@ -225,8 +277,8 @@ public class LyrAppController implements Initializable, Observable {
                     setMaxWidth(param.getWidth() - 16);
                     setPrefWidth(param.getWidth() - 16);
                     setWrapText(true);
-                    setTextAlignment(TextAlignment.JUSTIFY);
                     setText(item.getText());
+                    setFont(Font.font(13));
                 }
             }
         });
@@ -241,7 +293,9 @@ public class LyrAppController implements Initializable, Observable {
 
     private void setPreviewText(String text) {
         textLabel.setText(text);
-        Constants.autoresizeText(text, textLabel, FONT);
+        int numberLines = (307 * Constants.MAX_NUMBER_OF_LINES_ON_SCREEN / Constants.DISPLAY_HEIGHT);
+        int numberOfCharacters = (503 * Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN / Constants.DISPLAY_WIDTH);
+        Constants.autoresizeText(text, textLabel, numberLines, numberOfCharacters);
     }
 
     public void configureScreens() {
@@ -250,7 +304,7 @@ public class LyrAppController implements Initializable, Observable {
         allScreens.addListener((ListChangeListener<Screen>) c -> {
             while (c.next()) {
                 if (c.wasAdded()) {
-                    int MAX_RETRY = 3;
+                    final int MAX_RETRY = 3;
                     for (Screen addedScreen : c.getAddedSubList()) {
                         int retryCount = 0;
                         while (retryCount < MAX_RETRY) {
@@ -318,13 +372,15 @@ public class LyrAppController implements Initializable, Observable {
         if (liveButtonClicked) {
             notifyObservers(UpdateType.SET_TEXT, textLabel.getText());
             notifyObserversTextAlignment(textLabel.getAlignment(), textLabel.getTextAlignment());
+            liveButton.setStyle(MENU_BUTTON_CLICKED_STYLE);
         } else {
             notifyObservers(UpdateType.SET_TEXT, "");
+            liveButton.setStyle("-fx-border-width: 0px 0px 0px 0px; -fx-base:  #2c4358");
         }
     }
 
     @FXML
-    public void searchKeyPressed(KeyEvent key) {
+    public void searchKeyPressedForSong(KeyEvent key) {
         String keyWords = songSearchTextField.getText().strip();
         if (!key.getCode().equals(KeyCode.ENTER))
             return;
@@ -332,9 +388,23 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
+    public void searchKeyPressedForPlaylist(KeyEvent key) {
+        String keyWords = playlistSearchTextField.getText().strip();
+        if (!key.getCode().equals(KeyCode.ENTER))
+            return;
+        playlistModel.setAll(lyrAppService.getFilteredPlaylists(keyWords));
+    }
+
+
+    @FXML
     public void clockButtonClicked() {
         hourLabel.setVisible(!hourLabel.isVisible());
         notifyObserversHourVisibility(hourLabel.isVisible());
+        if (hourLabel.isVisible()) {
+            clockButton.setStyle(MENU_BUTTON_CLICKED_STYLE);
+        } else {
+            clockButton.setStyle("-fx-border-width: 0px 0px 0px 0px; -fx-base:  #2c4358");
+        }
     }
 
     @FXML

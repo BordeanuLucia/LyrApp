@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -18,6 +20,8 @@ import java.util.ResourceBundle;
 public class LiveController implements Initializable, Observer {
     private Screen currentScreen;
     private static final double FONT = Constants.LIVE_TEXT_FONT;
+    private double screenHeight = 0;
+    private double screenWidth = 0;
 
     @FXML
     private Label hourLabel;
@@ -35,17 +39,21 @@ public class LiveController implements Initializable, Observer {
     public void configure(Screen screen) {
         currentScreen = screen;
         Rectangle2D bounds = screen.getVisualBounds();
-        double height = bounds.getHeight();
-        double width = bounds.getWidth();
-        mainAnchorPane.setPrefSize(width, height);
-        hourLabel.setPrefWidth(width);
-        hourLabel.setLayoutX(0);
-        double aux = hourLabel.getFont().getSize();
-        hourLabel.setLayoutY(height - aux * 4 / 5);
+        screenHeight = bounds.getHeight();
+        screenWidth = bounds.getWidth();
 
-        textLabel.setLayoutX(0);
-        textLabel.setLayoutY(0);
-        textLabel.setPrefSize(width, height - aux * 3 / 5);
+        mainAnchorPane.setPrefSize(screenWidth, screenHeight);
+
+        hourLabel.setPrefWidth(screenWidth);
+        hourLabel.setLayoutX(0);
+        double clockFont = FONT * screenWidth / Constants.DISPLAY_WIDTH;
+        hourLabel.setFont(Font.font("System", FontWeight.BOLD, clockFont));
+        double clockHeight = clockFont * Constants.CLOCK_HEIGHT / FONT;
+        hourLabel.setLayoutY(screenHeight - clockHeight);
+
+        textLabel.setLayoutX(2 * screenWidth / 100);
+        textLabel.setLayoutY(2 * screenHeight / 100);
+        textLabel.setPrefSize(screenWidth - 4 * screenWidth / 100, screenHeight - clockHeight);
     }
 
     @Override
@@ -72,7 +80,9 @@ public class LiveController implements Initializable, Observer {
 
     @Override
     public void setText(String text) {
-        Constants.autoresizeText(text, textLabel, FONT);
+        int numberLines = (int)(screenHeight * Constants.MAX_NUMBER_OF_LINES_ON_SCREEN / Constants.DISPLAY_HEIGHT);
+        int numberOfCharacters = (int)(screenWidth * Constants.MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN / Constants.DISPLAY_WIDTH);
+        Constants.autoresizeText(text, textLabel, numberLines, numberOfCharacters);
     }
 
     @Override

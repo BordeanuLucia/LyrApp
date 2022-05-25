@@ -1,5 +1,6 @@
 package service;
 
+import model.Playlist;
 import model.Song;
 import repository.IPlaylistsRepository;
 import repository.ISongsRepository;
@@ -28,7 +29,11 @@ public class LyrAppService implements ILyrAppService{
     public void deleteSong(Song song) { songsRepository.delete(song.getId()); }
 
     @Override
-    public void addSong(Song song) {
-        songsRepository.save(song);
-    }
+    public void addSong(Song song) { songsRepository.save(song); }
+
+    @Override
+    public Set<Playlist> getFilteredPlaylists(String keyWords) { return playlistRepository.getPlaylistsByKeyWords(keyWords); }
+
+    @Override
+    public List<Playlist> getAllPlaylists() { return (List<Playlist>) playlistRepository.getAll(); }
 }

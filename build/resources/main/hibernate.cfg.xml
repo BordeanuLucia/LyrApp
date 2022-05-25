@@ -18,5 +18,6 @@
         <property name="hibernate.enable_lazy_load_no_trans">true</property>
         <mapping resource="hibernate/Song.hbm.xml"/>
         <mapping resource="hibernate/Strophe.hbm.xml"/>
+        <mapping resource="hibernate/Playlist.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

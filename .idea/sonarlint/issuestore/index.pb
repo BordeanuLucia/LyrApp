@@ -9,10 +9,6 @@ G
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 M
 .idea/modules/LyrApp.main.iml,a\5\a5d1d89805a7b984a8d00e29019bcb68a6db20c8
-b
-2src/main/java/repository/IPlaylistsRepository.java,d\6\d6bb7eae81c7cac6de32be10fe6d339b89abe900
-a
-1src/main/java/repository/PlaylistsRepository.java,c\a\ca105135decdea2cf4c9e68fd99b1df1d2115e52
 c
 3src/main/java/utils/sqlite_utils/SQLiteDialect.java,4\4\44a410dba9b41f9ad54e80482ce669e683eaaa43
 x
@@ -21,16 +17,6 @@ Y
 )src/main/java/repository/IRepository.java,d\b\db4df2df3eb2b243efe80aeb3fa1810f67ca7e3e
 X
 (src/main/java/utils/LyrAppException.java,d\3\d3830d5800a59f142fd353f1fdc43dece922f713
-Q
-!src/main/java/model/Playlist.java,a\1\a19ac4f316cb85c4403156eed7e0c0c2382488f0
-_
-/src/main/java/controller/LoadingController.java,e\0\e003dd471713776324657107e7b1ae40f2d081ed
-M
-src/main/java/model/Song.java,4\0\406b4222dc417f8cfb9bdb752c7beadb2fcd04c4
-^
-.src/main/java/repository/ISongsRepository.java,d\0\d0d6aa4edf4b0c82edde19d308859149e42e1292
-]
--src/main/java/repository/SongsRepository.java,1\f\1f2ea197bbdcebe8a02572e9c1a937d785e544cc
 T
 $src/main/java/observer/Observer.java,0\e\0e9b6271a6b42faa2ae9e71f15ddc7ba079437f6
 X
@@ -43,21 +29,9 @@ W
 'src/main/java/utils/SongWindowType.java,6\d\6dc6e38bc689fedc3afc2515736de363dc3e4d88
 P
  src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25
-X
-(src/main/java/service/LyrAppService.java,0\1\01ea6438c3584df6418d59cf478753c0d1973813
-Y
-)src/main/java/service/ILyrAppService.java,8\a\8a558f1e149f9fab19f3eae1a031a1c8130a2403
 d
 4src/main/java/controller/ConfirmationController.java,b\c\bc3fda5601070afa8b548fd11c9767d8c16cd384
 \
 ,src/main/java/controller/SongController.java,d\2\d218788cd9d13037348494fa820723cc9de265e3
-\
-,src/main/java/controller/LiveController.java,1\8\18c280b930aca46a6c3fcf7c60d2fcf3c198552c
-X
-(src/main/java/controller/LyrAppMain.java,f\2\f2eb4bd9aca0eac606e5d242759166543d526779
 _
 /src/main/java/controller/WarningController.java,1\3\13a2ec97928f845677907ca7e1f56a0ff7fb176a
-^
-.src/main/java/controller/LyrAppController.java,9\c\9c1a6075355917aa56847ada010094dbb17bff73
-R
-"src/main/java/utils/Constants.java,4\f\4f7a6c7079cf4b2ff19d6787f3f02ddcd18c4121

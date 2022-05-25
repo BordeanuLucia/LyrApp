@@ -1,19 +1,20 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Class to create playlists of multiple songs
  */
 public class Playlist {
     private Long id;
-    private List<Song> songs;
+    private String title;
+    private Set<Song> songs;
 
     public Playlist(Long id) {
         this.id = id;
-        this.songs = new ArrayList<>();
+        this.songs = new HashSet<>();
     }
 
     public Playlist() {
@@ -27,11 +28,11 @@ public class Playlist {
         this.id = id;
     }
 
-    public List<Song> getSongs() {
+    public Set<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(Set<Song> songs) {
         this.songs = songs;
     }
 
@@ -48,10 +49,15 @@ public class Playlist {
         }
     }
 
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
     @Override
     public String toString() {
         return "Playlist{" +
                 "id=" + id +
+                ", title='" + title + '\'' +
                 ", songs=" + songs +
                 '}';
     }
@@ -62,11 +68,12 @@ public class Playlist {
         if (o == null || getClass() != o.getClass()) return false;
         Playlist playlist = (Playlist) o;
         return Objects.equals(id, playlist.id) &&
+                Objects.equals(title, playlist.title) &&
                 Objects.equals(songs, playlist.songs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, songs);
+        return Objects.hash(id, title, songs);
     }
 }
