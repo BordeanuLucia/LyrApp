@@ -18,7 +18,7 @@ public interface IRepository<E> {
      * saves an entity
      * @param entity E
      */
-    void save(E entity);
+    long save(E entity);
 
     /**
      * removes an entity based on it's id

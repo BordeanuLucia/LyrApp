@@ -17,7 +17,6 @@ public class Strophe {
     public Strophe(Long position, String text) {
         this.position = position;
         this.text = text;
-//        this.songId = songId;
     }
 
     public Long getId() {

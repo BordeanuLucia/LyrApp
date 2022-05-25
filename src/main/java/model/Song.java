@@ -19,6 +19,11 @@ public class Song {
         this.lyrics = lyrics;
     }
 
+    public Song(String title) {
+        this.title = title;
+        this.lyrics = new HashSet<>();
+    }
+
     public Long getId() {
         return id;
     }
@@ -47,9 +52,9 @@ public class Song {
         StringBuilder text = new StringBuilder();
         for (Strophe strophe : lyrics){
             text.append(strophe.getText());
-            text.append("\n");
+            text.append("\n\n");
         }
-        return text.toString();
+        return text.toString().strip();
     }
 
     @Override
@@ -78,10 +83,10 @@ public class Song {
 
     public List<Strophe> getOrderedLyrics() {
         return lyrics.stream().sorted((o1, o2) -> {
-            if (o1.getPosition() <= o2.getPosition())
+            if (o1.getPosition() >= o2.getPosition())
                 return 0;
             else
-                return 1;
+                return -1;
         }).collect(Collectors.toList());
     }
 }

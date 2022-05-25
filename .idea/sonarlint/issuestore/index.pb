@@ -13,8 +13,6 @@ c
 3src/main/java/utils/sqlite_utils/SQLiteDialect.java,4\4\44a410dba9b41f9ad54e80482ce669e683eaaa43
 x
 Hsrc/main/java/utils/sqlite_utils/SQLiteDialectIdentityColumnSupport.java,d\5\d5b9dabdffa68bf0da71cb0b6698c2d5806b93d4
-Y
-)src/main/java/repository/IRepository.java,d\b\db4df2df3eb2b243efe80aeb3fa1810f67ca7e3e
 X
 (src/main/java/utils/LyrAppException.java,d\3\d3830d5800a59f142fd353f1fdc43dece922f713
 X
@@ -23,7 +21,3 @@ S
 #src/main/java/utils/UpdateType.java,2\1\21ed65d68e12511175c0a07c6cf20a5ae055aa0b
 W
 'src/main/java/utils/SongWindowType.java,6\d\6dc6e38bc689fedc3afc2515736de363dc3e4d88
-P
- src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25
-\
-,src/main/java/controller/SongController.java,d\2\d218788cd9d13037348494fa820723cc9de265e3

@@ -32,12 +32,10 @@ import model.Song;
 import model.Strophe;
 import observer.Observable;
 import observer.Observer;
-import repository.IPlaylistsRepository;
-import repository.ISongsRepository;
-import repository.PlaylistsRepository;
-import repository.SongsRepository;
+import repository.*;
 import service.LyrAppService;
 import utils.Constants;
+import utils.SongWindowType;
 import utils.UpdateType;
 
 import java.io.IOException;
@@ -103,7 +101,8 @@ public class LyrAppController implements Initializable, Observable {
     static {
         ISongsRepository songsRepository = new SongsRepository();
         IPlaylistsRepository playlistRepository = new PlaylistsRepository();
-        lyrAppService = new LyrAppService(songsRepository, playlistRepository);
+        IStrophesRepository strophesRepository = new StrophesRepository();
+        lyrAppService = new LyrAppService(songsRepository, playlistRepository, strophesRepository);
     }
 
     @Override
@@ -420,6 +419,22 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
+    public void handleAddButtonClicked(){
+        try {
+            FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\SongWindow.fxml"));
+            Parent songRoot = confirmationLoader.load();
+            Scene songScene = new Scene(songRoot);
+            SongController songController = confirmationLoader.getController();
+
+            Stage songStage = new Stage();
+            songStage.centerOnScreen();
+            songStage.setScene(songScene);
+            songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage);
+            songStage.show();
+        } catch (Exception ignored) { }
+    }
+
+    @FXML
     public void searchKeyPressedForSong(KeyEvent key) {
         String keyWords = songSearchTextField.getText().strip();
         if (!key.getCode().equals(KeyCode.ENTER))
@@ -434,7 +449,6 @@ public class LyrAppController implements Initializable, Observable {
             return;
         playlistModel.setAll(lyrAppService.getFilteredPlaylists(keyWords));
     }
-
 
     @FXML
     public void clockButtonClicked() {
@@ -473,7 +487,23 @@ public class LyrAppController implements Initializable, Observable {
 
     @FXML
     public void handleUpdateButtonClicked() {
-        // in the future
+        Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
+        if (selectedSong != null) {
+            try {
+                FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\SongWindow.fxml"));
+                Parent songRoot = confirmationLoader.load();
+                Scene songScene = new Scene(songRoot);
+                SongController songController = confirmationLoader.getController();
+
+                Stage songStage = new Stage();
+                songStage.centerOnScreen();
+                songStage.setScene(songScene);
+                songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage);
+                songStage.show();
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
+        }
     }
 
     public void close() {

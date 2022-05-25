@@ -86,7 +86,7 @@
                </cursor>
             </Button>
             <Pane prefHeight="129.0" prefWidth="108.0" />
-            <Button mnemonicParsing="false" prefHeight="146.0" prefWidth="107.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Adaugă melodie" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button mnemonicParsing="false" onAction="#handleAddButtonClicked" prefHeight="146.0" prefWidth="107.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Adaugă melodie" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -148,7 +148,7 @@
       <Label fx:id="updateLabel" layoutX="336.0" layoutY="36.0" style="-fx-background-color: white;" text="Modifică" visible="false" />
       <Label fx:id="deleteLabel" layoutX="365.0" layoutY="36.0" style="-fx-background-color: white;" text="Șterge" visible="false" />
       <Label fx:id="browseLabel" layoutX="354.0" layoutY="388.0" style="-fx-background-color: white;" text="browse" visible="false" />
-      <Pane layoutX="701.0" layoutY="342.0" prefHeight="200.0" prefWidth="200.0">
+      <Pane layoutX="699.0" layoutY="344.0" prefHeight="200.0" prefWidth="200.0">
          <children>
             <ToggleButton fx:id="boldButton" layoutX="49.0" layoutY="39.0" mnemonicParsing="false" onAction="#boldButtonClicked" prefHeight="30.0" prefWidth="28.0" style="-fx-base: #426484;" text="B">
                <font>

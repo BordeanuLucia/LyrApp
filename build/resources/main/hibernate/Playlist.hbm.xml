@@ -9,7 +9,7 @@
             <generator class="increment"/>
         </id>
         <property name="title" type="java.lang.String" column="title"/>
-        <set name="songs" table="song_playlist" fetch="select" cascade="all" >
+        <set name="songs" table="song_playlist" fetch="select">
             <key>
                 <column name="playlistId"/>
             </key>

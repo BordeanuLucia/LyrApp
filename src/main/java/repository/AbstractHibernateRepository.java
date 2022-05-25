@@ -28,21 +28,22 @@ public abstract class AbstractHibernateRepository<E> implements IRepository<E> {
     }
 
     @Override
-    public void save(E entity) {
+    public long save(E entity) {
         if (entity == null) {
             throw new IllegalArgumentException();
         }
-
+        long id = -1;
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.save(entity);
+            id = (long) session.save(entity);
             transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
         }
+        return id;
     }
 
     @Override
