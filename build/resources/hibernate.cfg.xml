@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="dialect">utils.sqlite_utils.SQLiteDialect</property>
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+<!--TODO create relative path -->
+        <property name="connection.url">jdbc:sqlite:E:\Licenta\LyrApp\LyrAppDB.db</property>
+
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <mapping resource="hibernate/Song.hbm.xml"/>
+        <mapping resource="hibernate/Strophe.hbm.xml"/>
+        <mapping resource="hibernate/Playlist.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
