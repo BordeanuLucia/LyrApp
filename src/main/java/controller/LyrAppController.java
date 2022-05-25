@@ -465,7 +465,7 @@ public class LyrAppController implements Initializable, Observable {
             Stage confirmationStage = new Stage();
             confirmationStage.centerOnScreen();
             confirmationStage.setScene(confirmationScene);
-            confirmationController.configure(selectedSong, lyrAppService, confirmationStage);
+            confirmationController.configure(selectedSong, lyrAppService, confirmationStage, currentStage);
             confirmationStage.show();
         } catch (Exception ignored) {
         }

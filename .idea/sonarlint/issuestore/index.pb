@@ -25,9 +25,5 @@ W
 'src/main/java/utils/SongWindowType.java,6\d\6dc6e38bc689fedc3afc2515736de363dc3e4d88
 P
  src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25
-d
-4src/main/java/controller/ConfirmationController.java,b\c\bc3fda5601070afa8b548fd11c9767d8c16cd384
 \
 ,src/main/java/controller/SongController.java,d\2\d218788cd9d13037348494fa820723cc9de265e3
-_
-/src/main/java/controller/WarningController.java,1\3\13a2ec97928f845677907ca7e1f56a0ff7fb176a
