@@ -10,6 +10,6 @@
         </id>
         <property name="position" type="java.lang.Long" column="position"/>
         <property name="text" type="java.lang.String" column="text"/>
-        <many-to-one name="song" not-null="false" class="model.Song" column="songId" lazy="false"/>
+        <property name="songId" type="java.lang.Long" column="songId"/>
     </class>
 </hibernate-mapping>

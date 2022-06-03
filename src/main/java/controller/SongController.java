@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -121,7 +120,7 @@ public class SongController implements Initializable {
             long id = service.addSong(song);
             if (id != -1){
                 for(Strophe strophe : strophes){
-                    strophe.setSong(song);
+                    strophe.setSongId(song.getId());
                     service.addStrophe(strophe);
                 }
             }
@@ -195,7 +194,7 @@ public class SongController implements Initializable {
                 service.deleteStrophesForSong(currentSong.getId());
                 currentSong.setLyrics(strophes);
                 for(Strophe strophe : strophes){
-                    strophe.setSong(currentSong);
+                    strophe.setSongId(currentSong.getId());
                     service.addStrophe(strophe);
                 }
                 currentStage.close();

@@ -68,7 +68,6 @@
     <column id="21" parent="8" name="songId">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <key id="22" parent="8" name="Strophes_pk">
       <ColNames>sId</ColNames>

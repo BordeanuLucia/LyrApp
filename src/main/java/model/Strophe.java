@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 /**
  * Class to store a verse of a song
  */
@@ -9,7 +7,7 @@ public class Strophe {
     private Long id;
     private Long position;
     private String text;
-    private Song song;
+    private Long songId;
 
     public Strophe() {
     }
@@ -43,12 +41,12 @@ public class Strophe {
         this.text = text;
     }
 
-    public Song getSong() {
-        return song;
+    public Long getSongId() {
+        return songId;
     }
 
-    public void setSong(Song song) {
-        this.song = song;
+    public void setSongId(Long song) {
+        this.songId = song;
     }
 
 //    @Override

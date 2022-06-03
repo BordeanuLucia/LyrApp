@@ -25,9 +25,10 @@ public class StrophesRepository extends AbstractHibernateRepository<Strophe> imp
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.createQuery("delete from Strophe where songId = " + songId, Strophe.class);
+            session.createQuery("delete from Strophe where songId = " + songId).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (transaction != null)
                 transaction.rollback();
         }
