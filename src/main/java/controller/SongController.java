@@ -15,6 +15,9 @@ import model.Strophe;
 import service.ILyrAppService;
 import utils.SongWindowType;
 
+
+import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -118,7 +121,7 @@ public class SongController implements Initializable {
             long id = service.addSong(song);
             if (id != -1){
                 for(Strophe strophe : strophes){
-                    strophe.setSongId(id);
+                    strophe.setSong(song);
                     service.addStrophe(strophe);
                 }
             }
@@ -192,12 +195,54 @@ public class SongController implements Initializable {
                 service.deleteStrophesForSong(currentSong.getId());
                 currentSong.setLyrics(strophes);
                 for(Strophe strophe : strophes){
-                    strophe.setSongId(currentSong.getId());
+                    strophe.setSong(currentSong);
                     service.addStrophe(strophe);
                 }
                 currentStage.close();
             }
         }
+    }
+
+    @FXML
+    public void handleAutocorrect() {
+        JFrame frame = new JFrame();
+        JTextPane jTextPane = new JTextPane();
+        jTextPane.setPreferredSize(new Dimension(363, 346));
+        jTextPane.setText(textTextArea.getText().strip());
+
+//        JEditorPane pane = new JEditorPane();
+//        pane.setText(textTextArea.getText().strip());
+//        pane.setSize(new Dimension(363,346));
+//
+//        SpellCheckerOptions sco = new SpellCheckerOptions();
+//        sco.setCaseSensitive(true);
+//        sco.setSuggestionsLimitMenu(10);
+//        JPopupMenu popup = SpellChecker.createCheckerPopup(sco);
+//        pane.addMouseListener(new PopupListener(popup));
+//
+//
+//        frame.getContentPane().add(pane, BorderLayout.CENTER);
+//        frame.setLocationRelativeTo(null);
+//        frame.pack();
+//        frame.setVisible(true);
+
+
+//        SpellCheckExampleUi ui = new SpellCheckExampleUi();
+//
+//        SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
+//
+//        SpellChecker.registerDictionaries(SongController.class.getResource("/dictionary"), "en");
+//        SpellChecker.register(ui.getTextComponent());
+//
+//        SpellCheckerOptions sco=new SpellCheckerOptions();
+//        sco.setCaseSensitive(true);
+//        sco.setSuggestionsLimitMenu(15);
+//
+//        JPopupMenu popup = SpellChecker.createCheckerPopup(sco);
+//        ui.getTextComponent().setComponentPopupMenu(popup);
+//
+//        ui.showUI();
+
     }
 
     @FXML

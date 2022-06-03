@@ -1,6 +1,5 @@
 package model;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -12,9 +11,9 @@ public class Playlist {
     private String title;
     private Set<Song> songs;
 
-    public Playlist(Long id) {
-        this.id = id;
-        this.songs = new HashSet<>();
+    public Playlist(String title, Set<Song> songs) {
+        this.title = title;
+        this.songs = songs;
     }
 
     public Playlist() {

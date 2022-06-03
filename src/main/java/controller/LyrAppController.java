@@ -1,12 +1,9 @@
 package controller;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,7 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -406,6 +402,10 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
+    public void handleSettingsButtonClicked(){
+    }
+
+    @FXML
     public void handleLiveButtonClicked() {
         liveButtonClicked = !liveButtonClicked;
         if (liveButtonClicked) {
@@ -431,6 +431,22 @@ public class LyrAppController implements Initializable, Observable {
             songStage.setScene(songScene);
             songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage);
             songStage.show();
+        } catch (Exception ignored) { }
+    }
+
+    @FXML
+    public void handleCreatePlaylistButtonClicked(){
+        try {
+            FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\PlaylistWindow.fxml"));
+            Parent root = confirmationLoader.load();
+            Scene scene = new Scene(root);
+            PlaylistController playlistController = confirmationLoader.getController();
+
+            Stage stage = new Stage();
+            stage.centerOnScreen();
+            stage.setScene(scene);
+            playlistController.configure(lyrAppService, stage, currentStage, songsModel);
+            stage.show();
         } catch (Exception ignored) { }
     }
 

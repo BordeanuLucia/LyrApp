@@ -93,7 +93,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button mnemonicParsing="false" prefHeight="148.0" prefWidth="108.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Crează playlist" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button mnemonicParsing="false" onAction="#handleCreatePlaylistButtonClicked" prefHeight="148.0" prefWidth="108.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Crează playlist" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
@@ -101,7 +101,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
             <Pane prefHeight="180.0" prefWidth="108.0" />
-            <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="108.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Setări" textFill="WHITE">
+            <Button mnemonicParsing="false" onAction="#handleSettingsButtonClicked" prefHeight="38.0" prefWidth="108.0" style="-fx-base: #2c4358;" styleClass="menuItem" stylesheets="@/styles/MenuButtonsStyles.css" text="Setări" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>

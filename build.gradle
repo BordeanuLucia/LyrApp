@@ -12,6 +12,7 @@ repositories {
 }
 
 mainClassName = 'Main'
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     runtime group: 'org.xerial', name: 'sqlite-jdbc', version: '3.34.0'
@@ -21,6 +22,8 @@ dependencies {
     compile('javax.xml.bind:jaxb-api:2.3.0')
     compile('javax.activation:activation:1.1')
     compile('org.glassfish.jaxb:jaxb-runtime:2.3.0')
+
+    implementation 'io.github.geniot:jortho:1.1'
 }
 
 javafx {

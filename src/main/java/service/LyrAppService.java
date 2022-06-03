@@ -53,4 +53,9 @@ public class LyrAppService implements ILyrAppService{
     public void deleteStrophesForSong(long songId) {
         strophesRepository.deleteStrophesForSong(songId);
     }
+
+    @Override
+    public long addPlaylist(Playlist playlist) {
+        return playlistRepository.save(playlist);
+    }
 }

@@ -1,12 +1,6 @@
 
-?
-settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-G
-src/main/java/Main.java,e\4\e44a8606ce010ad9b89aafdfcee2ab49afbf6d10
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 M
 .idea/modules/LyrApp.main.iml,a\5\a5d1d89805a7b984a8d00e29019bcb68a6db20c8
 c
@@ -15,9 +9,25 @@ x
 Hsrc/main/java/utils/sqlite_utils/SQLiteDialectIdentityColumnSupport.java,d\5\d5b9dabdffa68bf0da71cb0b6698c2d5806b93d4
 X
 (src/main/java/utils/LyrAppException.java,d\3\d3830d5800a59f142fd353f1fdc43dece922f713
-X
-(src/main/java/controller/Controller.java,0\5\05fd466bff28423ca702e1a116df355b44712db1
 S
 #src/main/java/utils/UpdateType.java,2\1\21ed65d68e12511175c0a07c6cf20a5ae055aa0b
 W
 'src/main/java/utils/SongWindowType.java,6\d\6dc6e38bc689fedc3afc2515736de363dc3e4d88
+_
+/src/main/java/controller/LoadingController.java,e\0\e003dd471713776324657107e7b1ae40f2d081ed
+j
+:.idea/dataSources/9a665b5b-5783-40ac-8413-71ff95a50ed8.xml,a\f\af7d603c8f782a30df303915b4f815eb83cab45d
+b
+2src/main/java/repository/IPlaylistsRepository.java,d\6\d6bb7eae81c7cac6de32be10fe6d339b89abe900
+T
+$src/main/java/observer/Observer.java,0\e\0e9b6271a6b42faa2ae9e71f15ddc7ba079437f6
+V
+&src/main/java/observer/Observable.java,2\5\259b685b9cab8c8703b43b9a8977b0f980d71325
+_
+/src/main/java/controller/WarningController.java,1\3\13a2ec97928f845677907ca7e1f56a0ff7fb176a
+^
+.src/main/java/repository/ISongsRepository.java,d\0\d0d6aa4edf4b0c82edde19d308859149e42e1292
+Y
+)src/main/java/repository/IRepository.java,d\b\db4df2df3eb2b243efe80aeb3fa1810f67ca7e3e
+R
+"src/main/java/utils/Constants.java,4\f\4f7a6c7079cf4b2ff19d6787f3f02ddcd18c4121

@@ -9,7 +9,7 @@ public class Strophe {
     private Long id;
     private Long position;
     private String text;
-    private Long songId;
+    private Song song;
 
     public Strophe() {
     }
@@ -43,37 +43,37 @@ public class Strophe {
         this.text = text;
     }
 
-    public Long getSongId() {
-        return songId;
+    public Song getSong() {
+        return song;
     }
 
-    public void setSongId(Long songId) {
-        this.songId = songId;
+    public void setSong(Song song) {
+        this.song = song;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Strophe strophe = (Strophe) o;
-        return id.equals(strophe.id) &&
-                Objects.equals(position, strophe.position) &&
-                Objects.equals(text, strophe.text) &&
-                Objects.equals(songId, strophe.songId);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Strophe strophe = (Strophe) o;
+//        return id.equals(strophe.id) &&
+//                Objects.equals(position, strophe.position) &&
+//                Objects.equals(text, strophe.text) &&
+//                Objects.equals(songId, strophe.songId);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, position, text, songId);
+//    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, position, text, songId);
-    }
-
-    @Override
-    public String toString() {
-        return "Strophe{" +
-                "id=" + id +
-                ", position=" + position +
-                ", text='" + text + '\'' +
-                ", songId=" + songId +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Strophe{" +
+//                "id=" + id +
+//                ", position=" + position +
+//                ", text='" + text + '\'' +
+//                ", songId=" + songId +
+//                '}';
+//    }
 }
