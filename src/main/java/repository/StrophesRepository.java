@@ -1,13 +1,10 @@
 package repository;
 
-import model.Song;
 import model.Strophe;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class StrophesRepository extends AbstractHibernateRepository<Strophe> implements IStrophesRepository {
     @Override

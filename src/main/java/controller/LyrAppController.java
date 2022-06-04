@@ -40,7 +40,7 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LyrAppController implements Initializable, Observable {
+public class LyrAppController extends AbstractUndecoratedController implements Initializable, Observable {
     private static final LyrAppService lyrAppService;
     private volatile boolean stopClock = false;
     private final List<Observer> observersList = new ArrayList<>();
@@ -93,6 +93,8 @@ public class LyrAppController implements Initializable, Observable {
     private ToggleButton italicButton;
     @FXML
     private ToggleButton underlineButton;
+    @FXML
+    private ToggleButton minimizeButton;
 
     static {
         ISongsRepository songsRepository = new SongsRepository();
@@ -127,21 +129,7 @@ public class LyrAppController implements Initializable, Observable {
         runRobotImageView.setOnMouseClicked(event -> {
             String songTitle = songSearchTextField.getText().strip();
             if (songTitle.equals("")) {
-                Thread borderColorFades = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        songSearchTextField.setStyle("-fx-border-color: red");
-                        try {
-                            synchronized (this) {
-                                wait(3000);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        songSearchTextField.setStyle("-fx-border-color: transparent");
-                    }
-                });
-                borderColorFades.start();
+                Constants.makeBorderRedForAWhile(songSearchTextField);
             } else {
                 handleSearchSongOnlineButtonClicked();
             }
@@ -159,6 +147,7 @@ public class LyrAppController implements Initializable, Observable {
     public void configure(Stage mainStage) {
         this.currentStage = mainStage;
         configureScreens();
+        configureUndecoratedWindow(currentStage, null);
     }
 
     private void initializePlaylistListView() {
@@ -188,7 +177,8 @@ public class LyrAppController implements Initializable, Observable {
 
         playlistListView.setOnMouseClicked(event -> {
             Playlist selectedSong = playlistListView.getSelectionModel().getSelectedItem();
-            songsModel.setAll(selectedSong.getSongs());
+            if (selectedSong != null)
+                songsModel.setAll(selectedSong.getSongs());
         });
     }
 
@@ -290,13 +280,16 @@ public class LyrAppController implements Initializable, Observable {
         });
 
         songsListView.setOnMouseClicked(event -> {
-            if (!updateImageView.isVisible()) {
-                updateImageView.setVisible(true);
-                deleteImageView.setVisible(true);
-            }
             Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
-            titleLabel.setText(selectedSong.getTitle());
-            strophesModel.setAll(selectedSong.getOrderedLyrics());
+            if (selectedSong != null) {
+                if (!updateImageView.isVisible()) {
+                    updateImageView.setVisible(true);
+                    deleteImageView.setVisible(true);
+                }
+                titleLabel.setText(selectedSong.getTitle());
+                strophesModel.setAll(selectedSong.getOrderedLyrics());
+
+            }
         });
 
         strophesListView.setItems(strophesModel);
@@ -319,9 +312,11 @@ public class LyrAppController implements Initializable, Observable {
         });
         strophesListView.setOnMouseClicked(event -> {
             Strophe selectedStrophe = strophesListView.getSelectionModel().getSelectedItem();
-            setPreviewText(selectedStrophe.getText());
-            if (liveButtonClicked) {
-                notifyObservers(UpdateType.SET_TEXT, selectedStrophe.getText());
+            if (selectedStrophe != null) {
+                setPreviewText(selectedStrophe.getText());
+                if (liveButtonClicked) {
+                    notifyObservers(UpdateType.SET_TEXT, selectedStrophe.getText());
+                }
             }
         });
     }
@@ -402,7 +397,7 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
-    public void handleSettingsButtonClicked(){
+    public void handleSettingsButtonClicked() {
     }
 
     @FXML
@@ -419,7 +414,7 @@ public class LyrAppController implements Initializable, Observable {
     }
 
     @FXML
-    public void handleAddButtonClicked(){
+    public void handleAddButtonClicked() {
         try {
             FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\SongWindow.fxml"));
             Parent songRoot = confirmationLoader.load();
@@ -431,11 +426,12 @@ public class LyrAppController implements Initializable, Observable {
             songStage.setScene(songScene);
             songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage);
             songStage.show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     @FXML
-    public void handleCreatePlaylistButtonClicked(){
+    public void handleCreatePlaylistButtonClicked() {
         try {
             FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\PlaylistWindow.fxml"));
             Parent root = confirmationLoader.load();
@@ -447,7 +443,8 @@ public class LyrAppController implements Initializable, Observable {
             stage.setScene(scene);
             playlistController.configure(lyrAppService, stage, currentStage, songsModel);
             stage.show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     @FXML
@@ -516,8 +513,8 @@ public class LyrAppController implements Initializable, Observable {
                 songStage.setScene(songScene);
                 songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage);
                 songStage.show();
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -595,7 +592,7 @@ public class LyrAppController implements Initializable, Observable {
             Scene loadingScene = new Scene(loadingRoot);
             stage.setScene(loadingScene);
             WarningController warningController = loadingLoader.getController();
-            warningController.configure(loadingRoot, stage, currentStage, warningText);
+            warningController.configure(stage, currentStage, warningText);
             stage.show();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -642,5 +639,18 @@ public class LyrAppController implements Initializable, Observable {
     public void underlineButtonClicked() {
         textLabel.setUnderline(underlineButton.isSelected());
         notifyTextFormat(boldButton.isSelected(), italicButton.isSelected(), underlineButton.isSelected());
+    }
+
+    @FXML
+    public void handleMinimizeWindow() {
+        currentStage.setIconified(true);
+        minimizeButton.setSelected(false);
+    }
+
+    @FXML
+    public void handleExitButtonClicked() {
+        this.close();
+        Platform.exit();
+        System.exit(0);
     }
 }

@@ -2,25 +2,18 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.Song;
 import service.ILyrAppService;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ConfirmationController implements Initializable {
+public class ConfirmationController extends AbstractUndecoratedController implements Initializable {
     private Song currentSong;
     private Stage currentStage;
-    private Stage previousStage;
     private ILyrAppService service;
-    private Parent currentRoot;
-    private double posX = 0;
-    private double posY = 0;
 
     @FXML
     private Label titleLabel;
@@ -30,32 +23,13 @@ public class ConfirmationController implements Initializable {
         //we have nothing to initialize
     }
 
-    public void configure(Song song, ILyrAppService service, Stage stage, Stage previousStage) {
+    public void configure(Song song, ILyrAppService service, Stage currentStage, Stage previousStage) {
         this.currentSong = song;
         this.service = service;
-        this.currentStage = stage;
-        this.previousStage = previousStage;
-        this.currentRoot = currentStage.getScene().getRoot();
+        this.currentStage = currentStage;
 
         titleLabel.setText(song.getTitle());
-        configureWindow();
-    }
-
-    private void configureWindow(){
-        currentStage.initStyle(StageStyle.UNDECORATED);
-        currentStage.initOwner(previousStage);
-        currentStage.initModality(Modality.WINDOW_MODAL);
-        currentStage.requestFocus();
-        currentStage.centerOnScreen();
-
-        currentRoot.setOnMousePressed(e -> {
-            posX = currentStage.getX() - e.getScreenX();
-            posY = currentStage.getY() - e.getScreenY();
-        });
-        currentRoot.setOnMouseDragged(e -> {
-            currentStage.setX(e.getScreenX() + posX);
-            currentStage.setY(e.getScreenY() + posY);
-        });
+        configureUndecoratedWindow(currentStage, previousStage);
     }
 
     @FXML

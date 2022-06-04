@@ -39,7 +39,8 @@ public class SampleApplication extends JFrame{
         // Build the test frame for the sample
         super("JOrtho Sample");
         JEditorPane text = new JTextPane();
-        text.setText( "This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.This is a simppler textt with spellingg errors.\n\nPressing the F7 key will display the spell check dialog." );
+        text.setText( "Nowadays technology has infiltrated in every aspect of our lives, in some it made them better and in others worse, but regarding the spiritual part of out lives it seems to have been a change for the better. In this paper we discuss the development of a software application intended to help religious organisations to carry out their programs in an easier manner by offering a smart solution for the management of songs. The software allows users to manage songs, display them on external devices, linked by a HDMI cables, and to search song online through a software robot.\n" +
+                " In the first chapters we talk about the importance and the motive behind the application and about some similar softwares, along with a comparison between them. We continue by discussing the tehnologies, tools and frameworks used as well as the overall environment in which the application was developed. In the last chapters we write about the process which led to the actual software and in the end we mention to which conclusions we came to and which enhancements could be made to obtain the best version of this type of application." );
         add( text );
         setSize(200, 160);
         setDefaultCloseOperation( EXIT_ON_CLOSE );

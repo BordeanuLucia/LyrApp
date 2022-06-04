@@ -2,35 +2,26 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.Song;
 import model.Strophe;
 import service.ILyrAppService;
+import utils.Constants;
 import utils.SongWindowType;
 
-
-import javax.swing.*;
-import java.awt.*;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-public class SongController implements Initializable {
+public class SongController extends AbstractUndecoratedController implements Initializable {
     private Song currentSong;
     private SongWindowType songWindowType = SongWindowType.ADD;
     private ILyrAppService service;
     private Stage currentStage;
-    private Parent currentRoot;
-    private Stage previousStage;
-    private double posX = 0;
-    private double posY = 0;
 
     @FXML
     private TextField titleTextField;
@@ -47,9 +38,7 @@ public class SongController implements Initializable {
     public void configure(Song song, SongWindowType songWindowType, ILyrAppService service, Stage currentStage, Stage previousStage) {
         this.currentSong = song;
         this.currentStage = currentStage;
-        this.currentRoot = currentStage.getScene().getRoot();
         this.service = service;
-        this.previousStage = previousStage;
         this.songWindowType = songWindowType;
         if (songWindowType.equals(SongWindowType.ADD)) {
             actionButton.setText("Salveaza melodia");
@@ -58,25 +47,9 @@ public class SongController implements Initializable {
             titleTextField.setText(song.getTitle());
             textTextArea.setText(song.getText());
         }
-        configureWindow();
+        configureUndecoratedWindow(currentStage, previousStage);
     }
 
-    private void configureWindow(){
-        currentStage.initStyle(StageStyle.UNDECORATED);
-        currentStage.initOwner(previousStage);
-        currentStage.initModality(Modality.WINDOW_MODAL);
-        currentStage.requestFocus();
-        currentStage.centerOnScreen();
-
-        currentRoot.setOnMousePressed(e -> {
-            posX = currentStage.getX() - e.getScreenX();
-            posY = currentStage.getY() - e.getScreenY();
-        });
-        currentRoot.setOnMouseDragged(e -> {
-            currentStage.setX(e.getScreenX() + posX);
-            currentStage.setY(e.getScreenY() + posY);
-        });
-    }
     @FXML
     public void handleActionButtonClicked() {
         switch (songWindowType) {
@@ -86,26 +59,15 @@ public class SongController implements Initializable {
     }
 
     private void addSong() {
+        boolean isTextAreaEmpty = textTextArea.getText().replace("\n", "").strip().equals("");
         String title = titleTextField.getText().strip();
         if (title.equals("")) {
-            Thread borderColorFades = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    titleTextField.setStyle("-fx-border-color: red");
-                    try {
-                        synchronized (this) {
-                            wait(3000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    titleTextField.setStyle("-fx-border-color: transparent");
-                }
-            });
-            borderColorFades.start();
+            Constants.makeBorderRedForAWhile(titleTextField);
+            if (isTextAreaEmpty)
+                Constants.makeBorderRedForAWhile(textTextArea);
             return;
         }
-        if (!textTextArea.getText().replace("\n", "").strip().equals("")) {
+        if (!isTextAreaEmpty) {
             String[] texts = textTextArea.getText().split("\n[ \n]*\n");
             Long position = 0L;
             Set<Strophe> strophes = new HashSet<>();
@@ -126,58 +88,16 @@ public class SongController implements Initializable {
             }
             currentStage.close();
         } else {
-            Thread borderColorFades = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    textTextArea.setStyle("-fx-border-color: red");
-                    try {
-                        synchronized (this) {
-                            wait(3000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    textTextArea.setStyle("-fx-border-color: transparent");
-                }
-            });
-            borderColorFades.start();
+            Constants.makeBorderRedForAWhile(textTextArea);
         }
     }
 
     private void updateSong() {
         if (titleTextField.getText().strip().equals("")) {
-            Thread borderColorFades = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    titleTextField.setStyle("-fx-border-color: red");
-                    try {
-                        synchronized (this) {
-                            wait(3000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    titleTextField.setStyle("-fx-border-color: transparent");
-                }
-            });
-            borderColorFades.start();
+            Constants.makeBorderRedForAWhile(titleTextField);
         } else {
             if (textTextArea.getText().replace("\n", "").strip().equals("")) {
-                Thread borderColorFades = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        textTextArea.setStyle("-fx-border-color: red");
-                        try {
-                            synchronized (this) {
-                                wait(3000);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        textTextArea.setStyle("-fx-border-color: transparent");
-                    }
-                });
-                borderColorFades.start();
+                Constants.makeBorderRedForAWhile(textTextArea);
             } else {
                 currentSong.setTitle(titleTextField.getText().strip());
                 service.updateSong(currentSong);
@@ -204,44 +124,7 @@ public class SongController implements Initializable {
 
     @FXML
     public void handleAutocorrect() {
-        JFrame frame = new JFrame();
-        JTextPane jTextPane = new JTextPane();
-        jTextPane.setPreferredSize(new Dimension(363, 346));
-        jTextPane.setText(textTextArea.getText().strip());
-
-//        JEditorPane pane = new JEditorPane();
-//        pane.setText(textTextArea.getText().strip());
-//        pane.setSize(new Dimension(363,346));
-//
-//        SpellCheckerOptions sco = new SpellCheckerOptions();
-//        sco.setCaseSensitive(true);
-//        sco.setSuggestionsLimitMenu(10);
-//        JPopupMenu popup = SpellChecker.createCheckerPopup(sco);
-//        pane.addMouseListener(new PopupListener(popup));
-//
-//
-//        frame.getContentPane().add(pane, BorderLayout.CENTER);
-//        frame.setLocationRelativeTo(null);
-//        frame.pack();
-//        frame.setVisible(true);
-
-
-//        SpellCheckExampleUi ui = new SpellCheckExampleUi();
-//
-//        SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
-//
-//        SpellChecker.registerDictionaries(SongController.class.getResource("/dictionary"), "en");
-//        SpellChecker.register(ui.getTextComponent());
-//
-//        SpellCheckerOptions sco=new SpellCheckerOptions();
-//        sco.setCaseSensitive(true);
-//        sco.setSuggestionsLimitMenu(15);
-//
-//        JPopupMenu popup = SpellChecker.createCheckerPopup(sco);
-//        ui.getTextComponent().setComponentPopupMenu(popup);
-//
-//        ui.showUI();
-
+        //TODO to be implemented
     }
 
     @FXML

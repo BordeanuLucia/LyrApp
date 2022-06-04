@@ -4,31 +4,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.Playlist;
 import model.Song;
 import service.ILyrAppService;
+import utils.Constants;
 
 import java.util.HashSet;
 import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
-public class PlaylistController implements Initializable {
+
+public class PlaylistController extends AbstractUndecoratedController implements Initializable {
     private ILyrAppService service;
     private Stage currentStage;
-    private Parent currentRoot;
-    private Stage previousStage;
-    private double posX = 0;
-    private double posY = 0;
 
     @FXML
     private ListView<Song> playlistSongsListView;
@@ -49,8 +43,6 @@ public class PlaylistController implements Initializable {
     public void configure(ILyrAppService service, Stage currentStage, Stage previousStage, List<Song> allSongs){
         this.service = service;
         this.currentStage = currentStage;
-        this.currentRoot = currentStage.getScene().getRoot();
-        this.previousStage = previousStage;
         songsModel.setAll(allSongs);
         songsListView.setItems(songsModel);
         playlistSongsListView.setItems(playlistSongsModel);
@@ -94,44 +86,13 @@ public class PlaylistController implements Initializable {
                 }
             }
         });
-        configureWindow();
-    }
-
-    private void configureWindow(){
-        currentStage.initStyle(StageStyle.UNDECORATED);
-        currentStage.initOwner(previousStage);
-        currentStage.initModality(Modality.WINDOW_MODAL);
-        currentStage.requestFocus();
-        currentStage.centerOnScreen();
-
-        currentRoot.setOnMousePressed(e -> {
-            posX = currentStage.getX() - e.getScreenX();
-            posY = currentStage.getY() - e.getScreenY();
-        });
-        currentRoot.setOnMouseDragged(e -> {
-            currentStage.setX(e.getScreenX() + posX);
-            currentStage.setY(e.getScreenY() + posY);
-        });
+        configureUndecoratedWindow(currentStage, previousStage);
     }
 
     @FXML
     public void saveButtonClicked( ) {
         if (playlistTitleTextField.getText().strip().equals("")){
-            Thread borderColorFades = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    playlistTitleTextField.setStyle("-fx-border-color: red");
-                    try {
-                        synchronized (this) {
-                            wait(3000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    playlistTitleTextField.setStyle("-fx-border-color: transparent");
-                }
-            });
-            borderColorFades.start();
+            Constants.makeBorderRedForAWhile(playlistTitleTextField);
         } else {
             Playlist playlist = new Playlist(playlistTitleTextField.getText().strip(), new HashSet<>(playlistSongsModel));
             service.addPlaylist(playlist);

@@ -1,6 +1,7 @@
 package utils;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -65,5 +66,23 @@ public class Constants {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static void makeBorderRedForAWhile(TextInputControl textField){
+        Thread borderColorFades = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                textField.setStyle("-fx-border-color: red");
+                try {
+                    synchronized (this) {
+                        wait(3000);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                textField.setStyle("-fx-border-color: transparent");
+            }
+        });
+        borderColorFades.start();
     }
 }

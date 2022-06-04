@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="repository.SongsRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-06-03T20:00:27" hostname="DESKTOP-OA80OH1" time="1.061">
+  <properties/>
+  <testcase name="testCRUD" classname="repository.SongsRepositoryTest" time="1.061"/>
+  <system-out><![CDATA[Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        max(sid) 
+    from
+        Songs
+Hibernate: 
+    insert 
+    into
+        Songs
+        (title, sid) 
+    values
+        (?, ?)
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_ 
+    where
+        song0_.sid=? limit ?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    update
+        Songs 
+    set
+        title=? 
+    where
+        sid=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_ 
+    where
+        song0_.sid=? limit ?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_ 
+    where
+        song0_.sid=? limit ?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    delete 
+    from
+        Songs 
+    where
+        sid=?
+Hibernate: 
+    select
+        song0_.sid as sid1_2_,
+        song0_.title as title2_2_ 
+    from
+        Songs song0_
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+Hibernate: 
+    select
+        lyrics0_.songId as songId4_3_0_,
+        lyrics0_.sid as sid1_3_0_,
+        lyrics0_.sid as sid1_3_1_,
+        lyrics0_.position as position2_3_1_,
+        lyrics0_.text as text3_3_1_,
+        lyrics0_.songId as songId4_3_1_ 
+    from
+        Strophes lyrics0_ 
+    where
+        lyrics0_.songId=?
+]]></system-out>
+  <system-err><![CDATA[Jun 03, 2022 11:00:23 PM org.hibernate.Version logVersion
+INFO: HHH000412: Hibernate Core {5.2.10.Final}
+Jun 03, 2022 11:00:23 PM org.hibernate.cfg.Environment <clinit>
+INFO: HHH000206: hibernate.properties not found
+Jun 03, 2022 11:00:24 PM org.hibernate.annotations.common.reflection.java.JavaReflectionManager <clinit>
+INFO: HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+Jun 03, 2022 11:00:24 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: org.hibernate.dialect.SQLiteDialect
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl configure
+WARN: HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001005: using driver [org.sqlite.JDBC] at URL [jdbc:sqlite:E:\Licenta\LyrApp\LyrAppDB.db]
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001001: Connection properties: {}
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl buildCreator
+INFO: HHH10001003: Autocommit mode: false
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.connections.internal.PooledConnections <init>
+INFO: HHH000115: Hibernate connection pool size: 20 (min=1)
+Jun 03, 2022 11:00:26 PM org.hibernate.dialect.Dialect <init>
+INFO: HHH000400: Using dialect: utils.sqlite_utils.SQLiteDialect
+Jun 03, 2022 11:00:26 PM org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl useContextualLobCreation
+INFO: HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [2] less than 4
+Jun 03, 2022 11:00:27 PM org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl getIsolatedConnection
+INFO: HHH10001501: Connection obtained from JdbcConnectionAccess [org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess@531a735d] for (non-JTA) DDL execution was not in auto-commit mode; the Connection 'local transaction' will be committed and the Connection will be set into auto-commit mode.
+Jun 03, 2022 11:00:27 PM org.hibernate.hql.internal.QueryTranslatorFactoryInitiator initiateService
+INFO: HHH000397: Using ASTQueryTranslatorFactory
+]]></system-err>
+</testsuite>
