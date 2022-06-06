@@ -18,4 +18,5 @@ public interface ILyrAppService {
     void addStrophe(Strophe strophe);
     void updateSong(Song song);
     void deleteStrophesForSong(long songId);
+    void deletePlaylist(Playlist playlist);
 }

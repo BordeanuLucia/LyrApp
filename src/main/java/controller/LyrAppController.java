@@ -24,6 +24,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Playlist;
+import model.PlaylistListItem;
 import model.Song;
 import model.Strophe;
 import observer.Observable;
@@ -154,26 +155,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         playlistModel.setAll(lyrAppService.getAllPlaylists());
         playlistListView.setItems(playlistModel);
         playlistListView.getSelectionModel().select(-1);
-        playlistListView.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Playlist item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    if (item.getTitle() == null || item.getTitle().strip().equals(""))
-                        setText("No title");
-                    else {
-                        setMinWidth(param.getWidth() - 2);
-                        setMaxWidth(param.getWidth() - 2);
-                        setPrefWidth(param.getWidth() - 2);
-                        setWrapText(true);
-                        setText(item.getTitle());
-                        setFont(Font.font(15));
-                    }
-                }
-            }
-        });
+        playlistListView.setCellFactory(param -> new PlaylistListItem(param, this));
 
         playlistListView.setOnMouseClicked(event -> {
             Playlist selectedSong = playlistListView.getSelectionModel().getSelectedItem();
@@ -400,8 +382,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
     }
 
     @FXML
-    public void handleSettingsButtonClicked() {
-    }
+    public void handleSettingsButtonClicked() { }
 
     @FXML
     public void handleLiveButtonClicked() {
@@ -495,7 +476,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage confirmationStage = new Stage();
             confirmationStage.centerOnScreen();
             confirmationStage.setScene(confirmationScene);
-            confirmationController.configure(selectedSong, lyrAppService, confirmationStage, currentStage, this);
+            confirmationController.configureForSong(selectedSong, lyrAppService, confirmationStage, currentStage, this);
             confirmationStage.show();
         } catch (Exception ignored) {
         }
@@ -732,4 +713,8 @@ public class LyrAppController extends AbstractUndecoratedController implements I
     public void close() {
         stopClock = true;
     }
+
+    public static LyrAppService getLyrAppService() { return lyrAppService; }
+
+    public Stage getCurrentStage() { return currentStage; }
 }

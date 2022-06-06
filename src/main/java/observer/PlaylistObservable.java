@@ -12,4 +12,5 @@ public interface PlaylistObservable {
     void removeObserver(SongPlaylistObserver observer);
     void notifyPlaylistAdded(Playlist playlist);
     void notifyPlaylistUpdated(Playlist playlist);
+    void notifyPlaylistDeleted(Playlist playlist);
 }

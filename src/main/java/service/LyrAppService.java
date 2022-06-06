@@ -58,4 +58,9 @@ public class LyrAppService implements ILyrAppService{
     public long addPlaylist(Playlist playlist) {
         return playlistRepository.save(playlist);
     }
+
+    @Override
+    public void deletePlaylist(Playlist playlist) {
+        playlistRepository.delete(playlist.getId());
+    }
 }

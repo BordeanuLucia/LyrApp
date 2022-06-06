@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import model.Playlist;
 import model.Song;
+import observer.PlaylistObservable;
 import observer.SongObservable;
 import observer.SongPlaylistObserver;
 import service.ILyrAppService;
@@ -14,11 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ConfirmationController extends AbstractUndecoratedController implements Initializable, SongObservable {
+public class ConfirmationController extends AbstractUndecoratedController implements Initializable, SongObservable, PlaylistObservable {
     private final List<SongPlaylistObserver> observersList = new ArrayList<>();
     private Song currentSong;
+    private Playlist currentPlaylist;
     private Stage currentStage;
     private ILyrAppService service;
+    private boolean forSong;
 
     @FXML
     private Label titleLabel;
@@ -28,7 +32,7 @@ public class ConfirmationController extends AbstractUndecoratedController implem
         //we have nothing to initialize
     }
 
-    public void configure(Song song, ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController) {
+    public void configureForSong(Song song, ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController) {
         addObserver(lyrAppController);
         this.currentSong = song;
         this.service = service;
@@ -36,13 +40,31 @@ public class ConfirmationController extends AbstractUndecoratedController implem
 
         titleLabel.setText(song.getTitle());
         configureUndecoratedWindow(currentStage, previousStage);
+        forSong = true;
+    }
+
+    public void configureForPlaylist(Playlist playlist, ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController) {
+        addObserver(lyrAppController);
+        this.currentPlaylist = playlist;
+        this.service = service;
+        this.currentStage = currentStage;
+
+        titleLabel.setText(playlist.getTitle());
+        configureUndecoratedWindow(currentStage, previousStage);
+        forSong = false;
     }
 
     @FXML
     public void handleDeleteSong() {
-        service.deleteSong(currentSong);
-        notifySongDeleted(currentSong);
-        currentStage.close();
+        if (forSong) {
+            service.deleteSong(currentSong);
+            notifySongDeleted(currentSong);
+            currentStage.close();
+        } else {
+            service.deletePlaylist(currentPlaylist);
+            notifyPlaylistDeleted(currentPlaylist);
+            currentStage.close();
+        }
     }
 
     @FXML
@@ -79,6 +101,23 @@ public class ConfirmationController extends AbstractUndecoratedController implem
     public void notifySongDeleted(Song song) {
         for (SongPlaylistObserver observer : observersList){
             observer.songDeleted(song);
+        }
+    }
+
+    @Override
+    public void notifyPlaylistAdded(Playlist playlist) {
+        // it is not needed
+    }
+
+    @Override
+    public void notifyPlaylistUpdated(Playlist playlist) {
+        // it is not needed
+    }
+
+    @Override
+    public void notifyPlaylistDeleted(Playlist playlist) {
+        for (SongPlaylistObserver observer : observersList){
+            observer.playlistDeleted(currentPlaylist);
         }
     }
 }

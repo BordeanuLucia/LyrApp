@@ -150,6 +150,11 @@ public class PlaylistController extends AbstractUndecoratedController implements
         }
     }
 
+    @Override
+    public void notifyPlaylistDeleted(Playlist playlist) {
+
+    }
+
     private void close(){
         this.currentStage.close();
     }

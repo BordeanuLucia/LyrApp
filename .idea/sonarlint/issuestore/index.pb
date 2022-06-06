@@ -31,8 +31,6 @@ G
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 Q
 !src/main/java/model/Playlist.java,a\1\a19ac4f316cb85c4403156eed7e0c0c2382488f0
-Y
-)src/main/java/service/ILyrAppService.java,8\a\8a558f1e149f9fab19f3eae1a031a1c8130a2403
 P
  src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25
 ]
@@ -55,5 +53,3 @@ $src/main/java/observer/Observer.java,0\e\0e9b6271a6b42faa2ae9e71f15ddc7ba07943
 ,src/main/java/controller/LiveController.java,1\8\18c280b930aca46a6c3fcf7c60d2fcf3c198552c
 i
 9src/main/java/repository/AbstractHibernateRepository.java,3\a\3a6a2175e4bd688ab22ed5cb6a0598042810cf58
-X
-(src/main/java/service/LyrAppService.java,0\1\01ea6438c3584df6418d59cf478753c0d1973813
