@@ -28,6 +28,7 @@ import model.Song;
 import model.Strophe;
 import observer.Observable;
 import observer.Observer;
+import observer.SongPlaylistObserver;
 import repository.*;
 import service.LyrAppService;
 import utils.Constants;
@@ -40,10 +41,9 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LyrAppController extends AbstractUndecoratedController implements Initializable, Observable {
+public class LyrAppController extends AbstractUndecoratedController implements Initializable, Observable, SongPlaylistObserver {
     private static final LyrAppService lyrAppService;
     private volatile boolean stopClock = false;
-    private final List<Observer> observersList = new ArrayList<>();
     private boolean liveButtonClicked = false;
     private Stage currentStage;
     private static final String MENU_BUTTON_CLICKED_STYLE = "-fx-border-color: WHITE; -fx-border-width: 0px 0px 0px 5px; -fx-base: #34526c";
@@ -254,6 +254,8 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         });
     }
 
+    private long selectedStropheIndex = -1;
+    private Song currentSelectedSong = null;
     private void initializeListViews() {
         songsModel.setAll(lyrAppService.getAllSongs());
         songsListView.setItems(songsModel);
@@ -282,13 +284,13 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         songsListView.setOnMouseClicked(event -> {
             Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
             if (selectedSong != null) {
+                currentSelectedSong = selectedSong;
                 if (!updateImageView.isVisible()) {
                     updateImageView.setVisible(true);
                     deleteImageView.setVisible(true);
                 }
                 titleLabel.setText(selectedSong.getTitle());
                 strophesModel.setAll(selectedSong.getOrderedLyrics());
-
             }
         });
 
@@ -313,6 +315,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         strophesListView.setOnMouseClicked(event -> {
             Strophe selectedStrophe = strophesListView.getSelectionModel().getSelectedItem();
             if (selectedStrophe != null) {
+                selectedStropheIndex = selectedStrophe.getPosition();
                 setPreviewText(selectedStrophe.getText());
                 if (liveButtonClicked) {
                     notifyObservers(UpdateType.SET_TEXT, selectedStrophe.getText());
@@ -351,7 +354,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
                         for (Observer liveController : observersList) {
                             if (liveController.getCurrentScreen().equals(removedScreen)) {
                                 liveController.closeWindow();
-                                observersList.remove(liveController);
+                                removeObserver(liveController);
                             }
                         }
                     }
@@ -382,7 +385,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         Parent liveRoot = liveLoader.load();
         Scene liveScene = new Scene(liveRoot);
         LiveController liveController = liveLoader.getController();
-        observersList.add(liveController);
+        addObserver(liveController);
         liveController.configure(screen);
 
         Rectangle2D bounds = screen.getVisualBounds();
@@ -424,7 +427,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage songStage = new Stage();
             songStage.centerOnScreen();
             songStage.setScene(songScene);
-            songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage);
+            songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage, this);
             songStage.show();
         } catch (Exception ignored) {
         }
@@ -441,7 +444,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage stage = new Stage();
             stage.centerOnScreen();
             stage.setScene(scene);
-            playlistController.configure(lyrAppService, stage, currentStage, songsModel);
+            playlistController.configure(lyrAppService, stage, currentStage, songsModel, this);
             stage.show();
         } catch (Exception ignored) {
         }
@@ -492,7 +495,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage confirmationStage = new Stage();
             confirmationStage.centerOnScreen();
             confirmationStage.setScene(confirmationScene);
-            confirmationController.configure(selectedSong, lyrAppService, confirmationStage, currentStage);
+            confirmationController.configure(selectedSong, lyrAppService, confirmationStage, currentStage, this);
             confirmationStage.show();
         } catch (Exception ignored) {
         }
@@ -511,63 +514,11 @@ public class LyrAppController extends AbstractUndecoratedController implements I
                 Stage songStage = new Stage();
                 songStage.centerOnScreen();
                 songStage.setScene(songScene);
-                songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage);
+                songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage, this);
                 songStage.show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void close() {
-        stopClock = true;
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-        observersList.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observersList.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(UpdateType updateType, String text) {
-        for (Observer observer : observersList) {
-            switch (updateType) {
-                case SET_HOUR -> observer.setHours(text);
-                case SET_TEXT -> observer.setText(text);
-            }
-        }
-    }
-
-    @Override
-    public void notifyObserversTextAlignment(Pos textAlignment, TextAlignment alignment) {
-        for (Observer observer : observersList) {
-            observer.setTextAlignment(textAlignment, alignment);
-        }
-    }
-
-    @Override
-    public void notifyObserversHourVisibility(boolean visibility) {
-        for (Observer observer : observersList) {
-            observer.setClockVisibility(visibility);
-        }
-    }
-
-    @Override
-    public void notifyObserversToClose() {
-        for (Observer observer : observersList) {
-            observer.closeWindow();
-        }
-    }
-
-    @Override
-    public void notifyTextFormat(boolean isBold, boolean isItalic, boolean isUnderlined) {
-        for (Observer observer : observersList) {
-            observer.formatText(isBold, isItalic, isUnderlined);
         }
     }
 
@@ -652,5 +603,133 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         this.close();
         Platform.exit();
         System.exit(0);
+    }
+
+    @Override
+    public void songAdded(Song song) {
+        songsModel.add(song);
+    }
+
+    @Override
+    public void songUpdated(Song song) {
+        int index = 0;
+        for (Song s : songsModel) {
+            if (s.getId().equals(song.getId())) {
+                songsModel.remove(index);
+                songsModel.add(index, song);
+                strophesModel.setAll(song.getOrderedLyrics());
+                titleLabel.setText(song.getTitle());
+                songsListView.getSelectionModel().select(index);
+
+                if (selectedStropheIndex != -1) {
+                    setPreviewText(song.getStrophe(selectedStropheIndex).getText());
+                    if (liveButtonClicked) {
+                        notifyObservers(UpdateType.SET_TEXT, song.getStrophe(selectedStropheIndex).getText());
+                    }
+                }
+                return;
+            }
+            index++;
+        }
+    }
+
+    @Override
+    public void songDeleted(Song song) {
+        int index = 0;
+        for (Song s : songsModel) {
+            if (s.getId().equals(song.getId())) {
+                songsModel.remove(index);
+                if (currentSelectedSong.equals(song)){
+                    currentSelectedSong = null;
+                    strophesModel.removeAll(strophesModel);
+                    titleLabel.setText("");
+                    deleteImageView.setVisible(false);
+                    updateImageView.setVisible(false);
+                }
+                playlistModel.setAll(lyrAppService.getAllPlaylists());
+                return;
+            }
+            index++;
+        }
+    }
+
+    @Override
+    public void playlistAdded(Playlist playlist) { playlistModel.add(playlist); }
+
+    @Override
+    public void playlistUpdated(Playlist playlist) {
+        int index = 0;
+        for (Playlist p : playlistModel) {
+            if (p.getId().equals(playlist.getId())) {
+                playlistModel.remove(index);
+                playlistModel.add(index, playlist);
+                return;
+            }
+            index++;
+        }
+    }
+
+    @Override
+    public void playlistDeleted(Playlist playlist) {
+        int index = 0;
+        for (Playlist p : playlistModel) {
+            if (p.getId().equals(playlist.getId())) {
+                playlistModel.remove(index);
+                return;
+            }
+            index++;
+        }
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        observersList.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observersList.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(UpdateType updateType, String text) {
+        for (Observer observer : observersList) {
+            switch (updateType) {
+                case SET_HOUR -> observer.setHours(text);
+                case SET_TEXT -> observer.setText(text);
+            }
+        }
+    }
+
+    @Override
+    public void notifyObserversTextAlignment(Pos textAlignment, TextAlignment alignment) {
+        for (Observer observer : observersList) {
+            observer.setTextAlignment(textAlignment, alignment);
+        }
+    }
+
+    @Override
+    public void notifyObserversHourVisibility(boolean visibility) {
+        for (Observer observer : observersList) {
+            observer.setClockVisibility(visibility);
+        }
+    }
+
+    @Override
+    public void notifyObserversToClose() {
+        for (Observer observer : observersList) {
+            observer.closeWindow();
+        }
+    }
+
+    @Override
+    public void notifyTextFormat(boolean isBold, boolean isItalic, boolean isUnderlined) {
+        for (Observer observer : observersList) {
+            observer.formatText(isBold, isItalic, isUnderlined);
+        }
+    }
+
+    public void close() {
+        stopClock = true;
     }
 }

@@ -48,9 +48,10 @@ public class Song {
         this.lyrics = lyrics;
     }
 
-    public String getText(){
+    public String getText() {
+        List<Strophe> strophes = getOrderedLyrics();
         StringBuilder text = new StringBuilder();
-        for (Strophe strophe : lyrics){
+        for (Strophe strophe : strophes) {
             text.append(strophe.getText());
             text.append("\n\n");
         }
@@ -88,5 +89,13 @@ public class Song {
             else
                 return -1;
         }).collect(Collectors.toList());
+    }
+
+    public Strophe getStrophe(long index) {
+        for (Strophe strophe : lyrics) {
+            if (strophe.getPosition().equals(index))
+                return strophe;
+        }
+        return null;
     }
 }

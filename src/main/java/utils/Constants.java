@@ -19,7 +19,7 @@ public class Constants {
     public static final int CLOCK_HEIGHT = 50;
 
     public static final int MAX_NUMBER_OF_LINES_ON_SCREEN = 7;
-    public static final int MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN = 44;
+    public static final int MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN = 42;
 
     public static final String ROBOT_RUN_COMMAND = "UiRobot.exe -file \"E:\\Licenta\\SongSearcherRobot\\SearchSongProcess\\SearchSongs.xaml\"";
     public static final String ROBOT_EXEC_DIR = "C:\\Program Files (x86)\\UiPath\\Studio";

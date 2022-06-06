@@ -27,12 +27,12 @@
          <font>
             <Font size="15.0" />
          </font></TextField>
-      <ListView fx:id="strophesListView" layoutX="125.0" layoutY="72.0" prefHeight="307.0" prefWidth="268.0" stylesheets="@/styles/MenuButtonsStyles.css" />
       <Label fx:id="titleLabel" layoutX="125.0" layoutY="47.0" maxHeight="27.0" maxWidth="268.0" minHeight="27.0" minWidth="205.0" prefHeight="27.0" prefWidth="224.0">
          <font>
             <Font name="System Bold Italic" size="15.0" />
          </font>
       </Label>
+      <ListView fx:id="strophesListView" layoutX="125.0" layoutY="72.0" prefHeight="307.0" prefWidth="268.0" stylesheets="@/styles/MenuButtonsStyles.css" />
       <Pane layoutX="410.0" layoutY="72.0" prefHeight="307.0" prefWidth="503.0" style="-fx-background-color: black;">
          <children>
             <Label fx:id="hourLabel" layoutX="219.0" layoutY="270.0" text="00:00" textFill="WHITE">

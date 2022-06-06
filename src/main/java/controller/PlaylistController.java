@@ -11,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Playlist;
 import model.Song;
+import observer.PlaylistObservable;
+import observer.SongPlaylistObserver;
 import service.ILyrAppService;
 import utils.Constants;
 
@@ -20,7 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class PlaylistController extends AbstractUndecoratedController implements Initializable {
+public class PlaylistController extends AbstractUndecoratedController implements Initializable, PlaylistObservable {
     private ILyrAppService service;
     private Stage currentStage;
 
@@ -40,12 +42,13 @@ public class PlaylistController extends AbstractUndecoratedController implements
         //we have nothing to initialize
     }
 
-    public void configure(ILyrAppService service, Stage currentStage, Stage previousStage, List<Song> allSongs){
+    public void configure(ILyrAppService service, Stage currentStage, Stage previousStage, List<Song> allSongs, LyrAppController lyrAppController){
         this.service = service;
         this.currentStage = currentStage;
         songsModel.setAll(allSongs);
         songsListView.setItems(songsModel);
         playlistSongsListView.setItems(playlistSongsModel);
+        addObserver(lyrAppController);
         songsListView.setCellFactory(param -> new ListCell<>() {
             @Override
             protected void updateItem(Song item, boolean empty) {
@@ -95,9 +98,10 @@ public class PlaylistController extends AbstractUndecoratedController implements
             Constants.makeBorderRedForAWhile(playlistTitleTextField);
         } else {
             Playlist playlist = new Playlist(playlistTitleTextField.getText().strip(), new HashSet<>(playlistSongsModel));
-            service.addPlaylist(playlist);
-            playlistTitleTextField.setText("");
-            playlistSongsModel.removeAll();
+            long id = service.addPlaylist(playlist);
+            playlist.setId(id);
+            notifyPlaylistAdded(playlist);
+            close();
         }
     }
 
@@ -119,6 +123,34 @@ public class PlaylistController extends AbstractUndecoratedController implements
 
     @FXML
     public void handleExitButtonClicked() {
+        this.currentStage.close();
+    }
+
+    @Override
+    public void addObserver(SongPlaylistObserver observer) {
+        observersList.add(observer);
+    }
+
+    @Override
+    public void removeObserver(SongPlaylistObserver observer) {
+        observersList.remove(observer);
+    }
+
+    @Override
+    public void notifyPlaylistAdded(Playlist playlist) {
+        for (SongPlaylistObserver observer : observersList){
+            observer.playlistAdded(playlist);
+        }
+    }
+
+    @Override
+    public void notifyPlaylistUpdated(Playlist playlist) {
+        for (SongPlaylistObserver observer : observersList){
+            observer.playlistUpdated(playlist);
+        }
+    }
+
+    private void close(){
         this.currentStage.close();
     }
 }
