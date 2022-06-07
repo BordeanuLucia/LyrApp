@@ -151,6 +151,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         configureUndecoratedWindow(currentStage, null);
     }
 
+    private Playlist currentSelectedPlaylist = null;
     private void initializePlaylistListView() {
         playlistModel.setAll(lyrAppService.getAllPlaylists());
         playlistListView.setItems(playlistModel);
@@ -158,9 +159,11 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         playlistListView.setCellFactory(param -> new PlaylistListItem(param, this));
 
         playlistListView.setOnMouseClicked(event -> {
-            Playlist selectedSong = playlistListView.getSelectionModel().getSelectedItem();
-            if (selectedSong != null)
-                songsModel.setAll(selectedSong.getSongs());
+            Playlist selectedPlaylist = playlistListView.getSelectionModel().getSelectedItem();
+            if (selectedPlaylist != null) {
+                currentSelectedPlaylist = lyrAppService.findPlaylist(selectedPlaylist.getId());
+                songsModel.setAll(currentSelectedPlaylist.getSongs());
+            }
         });
     }
 
@@ -425,7 +428,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage stage = new Stage();
             stage.centerOnScreen();
             stage.setScene(scene);
-            playlistController.configure(lyrAppService, stage, currentStage, songsModel, this);
+            playlistController.configure(lyrAppService, stage, currentStage,this, null);
             stage.show();
         } catch (Exception ignored) {
         }
@@ -436,7 +439,12 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         String keyWords = songSearchTextField.getText().strip();
         if (!key.getCode().equals(KeyCode.ENTER))
             return;
-        songsModel.setAll(lyrAppService.getFilteredSongs(keyWords));
+        currentSelectedPlaylist = null;
+        if (!keyWords.equals("")) {
+            songsModel.setAll(lyrAppService.getFilteredSongs(keyWords));
+        }else{
+            songsModel.setAll(lyrAppService.getAllSongs());
+        }
     }
 
     @FXML
@@ -484,7 +492,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
 
     @FXML
     public void handleUpdateButtonClicked() {
-        Song selectedSong = songsListView.getSelectionModel().getSelectedItem();
+        Song selectedSong = currentSelectedSong;
         if (selectedSong != null) {
             try {
                 FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\SongWindow.fxml"));
@@ -588,7 +596,8 @@ public class LyrAppController extends AbstractUndecoratedController implements I
 
     @Override
     public void songAdded(Song song) {
-        songsModel.add(song);
+        if (currentSelectedPlaylist == null)
+            songsModel.add(song);
     }
 
     @Override
@@ -598,19 +607,19 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             if (s.getId().equals(song.getId())) {
                 songsModel.remove(index);
                 songsModel.add(index, song);
-                strophesModel.setAll(song.getOrderedLyrics());
-                titleLabel.setText(song.getTitle());
                 songsListView.getSelectionModel().select(index);
-
-                if (selectedStropheIndex != -1) {
-                    setPreviewText(song.getStrophe(selectedStropheIndex).getText());
-                    if (liveButtonClicked) {
-                        notifyObservers(UpdateType.SET_TEXT, song.getStrophe(selectedStropheIndex).getText());
-                    }
-                }
-                return;
+                break;
             }
             index++;
+        }
+
+        strophesModel.setAll(song.getOrderedLyrics());
+        titleLabel.setText(song.getTitle());
+        if (selectedStropheIndex != -1) {
+            setPreviewText(song.getStrophe(selectedStropheIndex).getText());
+            if (liveButtonClicked) {
+                notifyObservers(UpdateType.SET_TEXT, song.getStrophe(selectedStropheIndex).getText());
+            }
         }
     }
 
@@ -620,14 +629,14 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         for (Song s : songsModel) {
             if (s.getId().equals(song.getId())) {
                 songsModel.remove(index);
-                if (currentSelectedSong.equals(song)){
+                if (currentSelectedSong.equals(song)) {
+                    selectedStropheIndex = -1;
                     currentSelectedSong = null;
                     strophesModel.removeAll(strophesModel);
                     titleLabel.setText("");
                     deleteImageView.setVisible(false);
                     updateImageView.setVisible(false);
                 }
-                playlistModel.setAll(lyrAppService.getAllPlaylists());
                 return;
             }
             index++;
@@ -644,9 +653,13 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             if (p.getId().equals(playlist.getId())) {
                 playlistModel.remove(index);
                 playlistModel.add(index, playlist);
-                return;
+                break;
             }
             index++;
+        }
+        if (currentSelectedPlaylist!= null && currentSelectedPlaylist.getId().equals(playlist.getId())){
+            songsModel.setAll(playlist.getSongs());
+            currentSelectedPlaylist = playlist;
         }
     }
 
@@ -656,21 +669,20 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         for (Playlist p : playlistModel) {
             if (p.getId().equals(playlist.getId())) {
                 playlistModel.remove(index);
-                return;
+                break;
             }
             index++;
+        }
+        if (currentSelectedPlaylist != null && currentSelectedPlaylist.getId().equals(playlist.getId())){
+            songsModel.setAll(lyrAppService.getAllSongs());
         }
     }
 
     @Override
-    public void addObserver(Observer observer) {
-        observersList.add(observer);
-    }
+    public void addObserver(Observer observer) { observersList.add(observer); }
 
     @Override
-    public void removeObserver(Observer observer) {
-        observersList.remove(observer);
-    }
+    public void removeObserver(Observer observer) { observersList.remove(observer); }
 
     @Override
     public void notifyObservers(UpdateType updateType, String text) {
@@ -710,11 +722,11 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         }
     }
 
-    public void close() {
-        stopClock = true;
-    }
+    public void close() { stopClock = true; }
 
     public static LyrAppService getLyrAppService() { return lyrAppService; }
 
     public Stage getCurrentStage() { return currentStage; }
+
+    public ObservableList<Song> getSongsModel() { return songsModel; }
 }

@@ -2,6 +2,7 @@ package model;
 
 import controller.ConfirmationController;
 import controller.LyrAppController;
+import controller.PlaylistController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -42,7 +43,7 @@ public class PlaylistListItem extends ListCell<Playlist> {
         spacePane.setPrefSize(5, 5);
 
         updateButton.setGraphic(updatePlaylist);
-        updateButton.setOnMouseClicked(event -> lyrAppController.playlistUpdated(currentPlaylist));
+        updateButton.setOnMouseClicked(event -> openUpdateWindow());
         updateButton.setStyle("-fx-background-color: white");
         updatePlaylist.setFitHeight(17);
         updatePlaylist.setFitWidth(15);
@@ -78,6 +79,7 @@ public class PlaylistListItem extends ListCell<Playlist> {
         if (empty || item == null) {
             hbox.getChildren().clear();
         } else {
+            hbox.getChildren().clear();
             hbox.getChildren().addAll(label, pane, updateButton, spacePane, deleteButton);
             setMinWidth(playlistListView.getWidth() - 2);
             setMaxWidth(playlistListView.getWidth() - 2);
@@ -90,7 +92,7 @@ public class PlaylistListItem extends ListCell<Playlist> {
         }
     }
 
-    private void openConfirmationWindow(){
+    private void openConfirmationWindow() {
         try {
             FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\ConfirmationWindow.fxml"));
             Parent confirmationRoot = confirmationLoader.load();
@@ -102,6 +104,23 @@ public class PlaylistListItem extends ListCell<Playlist> {
             confirmationStage.setScene(confirmationScene);
             confirmationController.configureForPlaylist(currentPlaylist, LyrAppController.getLyrAppService(), confirmationStage, lyrAppController.getCurrentStage(), lyrAppController);
             confirmationStage.show();
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void openUpdateWindow() {
+        try {
+            FXMLLoader confirmationLoader = new FXMLLoader(getClass().getClassLoader().getResource("user_interface\\PlaylistWindow.fxml"));
+            Parent root = confirmationLoader.load();
+            Scene scene = new Scene(root);
+            PlaylistController playlistController = confirmationLoader.getController();
+
+            Stage stage = new Stage();
+            stage.centerOnScreen();
+            stage.setScene(scene);
+            playlistController.configure(LyrAppController.getLyrAppService(), stage, lyrAppController.getCurrentStage(), lyrAppController, currentPlaylist);
+            stage.show();
+        } catch (Exception ignored) {
+        }
     }
 }

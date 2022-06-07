@@ -44,4 +44,34 @@ public class SongsRepository extends AbstractHibernateRepository<Song> implement
 //        result.addAll(result2);
         return result;
     }
+
+    @Override
+    public void delete(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Song entity = findOne(id);
+            if (entity != null)
+                session.delete(entity);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null)
+                transaction.rollback();
+        }
+
+        transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.createQuery("delete from SongPlaylist where songId = " + id).executeUpdate();
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null)
+                transaction.rollback();
+        }
+    }
 }

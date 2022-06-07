@@ -31,10 +31,6 @@ G
 settings.gradle,0\5\05efc8b1657769a27696d478ded1e95f38737233
 Q
 !src/main/java/model/Playlist.java,a\1\a19ac4f316cb85c4403156eed7e0c0c2382488f0
-P
- src/main/java/model/Strophe.java,b\5\b54acb86e5f96e5683297bcde38e119b40264c25
-]
--src/main/java/repository/SongsRepository.java,1\f\1f2ea197bbdcebe8a02572e9c1a937d785e544cc
 _
 /src/main/java/controller/LoadingController.java,e\0\e003dd471713776324657107e7b1ae40f2d081ed
 X
@@ -43,13 +39,29 @@ k
 ;src/main/java/controller/AbstractUndecoratedController.java,e\9\e97c448b45f4016e7486ce525a2c1536fa257937
 a
 1src/test/java/repository/SongsRepositoryTest.java,0\f\0f47528a8365bef363dc499b1d8ca76b046d98e9
-`
-0src/main/java/repository/StrophesRepository.java,0\5\05a01f143891c0f3d66c0818b7e0872d3800925b
 _
 /src/main/java/controller/WarningController.java,1\3\13a2ec97928f845677907ca7e1f56a0ff7fb176a
 T
 $src/main/java/observer/Observer.java,0\e\0e9b6271a6b42faa2ae9e71f15ddc7ba079437f6
 \
 ,src/main/java/controller/LiveController.java,1\8\18c280b930aca46a6c3fcf7c60d2fcf3c198552c
-i
-9src/main/java/repository/AbstractHibernateRepository.java,3\a\3a6a2175e4bd688ab22ed5cb6a0598042810cf58
+Z
+*src/main/java/observer/SongObservable.java,5\c\5c925e819e1207f6464d457f8373b06e2bc84359
+O
+src/main/java/SampleApplet.java,3\7\370661d2d3eeb76fd2b6258ac9dc37183084492c
+`
+0src/main/java/observer/SongPlaylistObserver.java,f\6\f67aa2e0d5de0c8fc5574ed21c01836e18d9b469
+E
+UserDictionary_en.txt,3\8\38cb0635565c87da9ad82b114bff107fb5b4623b
+R
+"src/main/java/utils/Constants.java,4\f\4f7a6c7079cf4b2ff19d6787f3f02ddcd18c4121
+V
+&src/main/java/observer/Observable.java,2\5\259b685b9cab8c8703b43b9a8977b0f980d71325
+_
+/src/main/java/controller/AutocorrectWindow.java,f\f\ff5a3d05cf276d94d4e1771526fbc60e2022b3eb
+\
+,src/main/java/controller/SongController.java,d\2\d218788cd9d13037348494fa820723cc9de265e3
+^
+.src/main/java/observer/PlaylistObservable.java,7\6\76cefd835020754c27bc0614d20e6d209c78653a
+d
+4src/main/java/controller/ConfirmationController.java,b\c\bc3fda5601070afa8b548fd11c9767d8c16cd384

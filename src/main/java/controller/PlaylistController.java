@@ -20,11 +20,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 
 public class PlaylistController extends AbstractUndecoratedController implements Initializable, PlaylistObservable {
     private ILyrAppService service;
     private Stage currentStage;
+    private Playlist currentPlaylist = null;
 
     @FXML
     private ListView<Song> playlistSongsListView;
@@ -42,11 +44,16 @@ public class PlaylistController extends AbstractUndecoratedController implements
         //we have nothing to initialize
     }
 
-    public void configure(ILyrAppService service, Stage currentStage, Stage previousStage, List<Song> allSongs, LyrAppController lyrAppController){
+    public void configure(ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController, Playlist currentPlaylist){
         this.service = service;
         this.currentStage = currentStage;
-        songsModel.setAll(allSongs);
+        this.currentPlaylist = currentPlaylist;
+        songsModel.setAll(service.getAllSongs());
         songsListView.setItems(songsModel);
+        if (this.currentPlaylist != null) {
+            playlistSongsModel.setAll(currentPlaylist.getSongs());
+            playlistTitleTextField.setText(currentPlaylist.getTitle());
+        }
         playlistSongsListView.setItems(playlistSongsModel);
         addObserver(lyrAppController);
         songsListView.setCellFactory(param -> new ListCell<>() {
@@ -94,13 +101,20 @@ public class PlaylistController extends AbstractUndecoratedController implements
 
     @FXML
     public void saveButtonClicked( ) {
-        if (playlistTitleTextField.getText().strip().equals("")){
+        if (playlistTitleTextField.getText().strip().equals("")) {
             Constants.makeBorderRedForAWhile(playlistTitleTextField);
         } else {
-            Playlist playlist = new Playlist(playlistTitleTextField.getText().strip(), new HashSet<>(playlistSongsModel));
-            long id = service.addPlaylist(playlist);
-            playlist.setId(id);
-            notifyPlaylistAdded(playlist);
+            if (currentPlaylist == null) {
+                Playlist playlist = new Playlist(playlistTitleTextField.getText().strip(), new HashSet<>(playlistSongsModel));
+                long id = service.addPlaylist(playlist);
+                playlist.setId(id);
+                notifyPlaylistAdded(playlist);
+            } else {
+                currentPlaylist.setTitle(playlistTitleTextField.getText().strip());
+                currentPlaylist.setSongs(new HashSet<>(playlistSongsModel));
+                service.updatePlaylist(currentPlaylist);
+                notifyPlaylistUpdated(currentPlaylist);
+            }
             close();
         }
     }
@@ -152,7 +166,7 @@ public class PlaylistController extends AbstractUndecoratedController implements
 
     @Override
     public void notifyPlaylistDeleted(Playlist playlist) {
-
+        // it is not needed
     }
 
     private void close(){

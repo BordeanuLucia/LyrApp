@@ -19,5 +19,6 @@
         <mapping resource="hibernate/Song.hbm.xml"/>
         <mapping resource="hibernate/Strophe.hbm.xml"/>
         <mapping resource="hibernate/Playlist.hbm.xml"/>
+        <mapping resource="hibernate/SongPlaylist.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
