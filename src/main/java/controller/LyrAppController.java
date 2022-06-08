@@ -411,8 +411,9 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Stage songStage = new Stage();
             songStage.centerOnScreen();
             songStage.setScene(songScene);
-            songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage, this);
+            songController.configure(null, SongWindowType.ADD, lyrAppService, songStage, currentStage, this, onlineLyrics);
             songStage.show();
+            onlineLyrics = "";
         } catch (Exception ignored) {
         }
     }
@@ -503,7 +504,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
                 Stage songStage = new Stage();
                 songStage.centerOnScreen();
                 songStage.setScene(songScene);
-                songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage, this);
+                songController.configure(selectedSong, SongWindowType.UPDATE, lyrAppService, songStage, currentStage, this, "");
                 songStage.show();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -511,12 +512,14 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         }
     }
 
+    String onlineLyrics = "";
     public void handleSearchSongOnlineButtonClicked() {
         try {
             URL u = new URL(Constants.URL_TO_CHECK_INTERNET_CONNECTION);
             URLConnection conn = u.openConnection();
             conn.connect();
-            Constants.runSearchSongRobot(songSearchTextField.getText().strip());
+            onlineLyrics = Constants.runSearchSongRobot(songSearchTextField.getText().strip());
+            handleAddButtonClicked();
         } catch (Exception e) {
             this.showSomethingWentWrongWindow(Constants.NO_INTERNET_CONNECTION_STRING);
             e.printStackTrace();
@@ -616,15 +619,24 @@ public class LyrAppController extends AbstractUndecoratedController implements I
         strophesModel.setAll(song.getOrderedLyrics());
         titleLabel.setText(song.getTitle());
         if (selectedStropheIndex != -1) {
-            setPreviewText(song.getStrophe(selectedStropheIndex).getText());
-            if (liveButtonClicked) {
-                notifyObservers(UpdateType.SET_TEXT, song.getStrophe(selectedStropheIndex).getText());
+            Strophe strophe = song.getStrophe(selectedStropheIndex);
+            if (strophe != null) {
+                setPreviewText(strophe.getText());
+                if (liveButtonClicked) {
+                    notifyObservers(UpdateType.SET_TEXT, song.getStrophe(selectedStropheIndex).getText());
+                }
             }
         }
     }
 
     @Override
     public void songDeleted(Song song) {
+        if (selectedStropheIndex != -1) {
+            setPreviewText("");
+            if (liveButtonClicked) {
+                notifyObservers(UpdateType.SET_TEXT, "");
+            }
+        }
         int index = 0;
         for (Song s : songsModel) {
             if (s.getId().equals(song.getId())) {
@@ -637,7 +649,7 @@ public class LyrAppController extends AbstractUndecoratedController implements I
                     deleteImageView.setVisible(false);
                     updateImageView.setVisible(false);
                 }
-                return;
+                break;
             }
             index++;
         }

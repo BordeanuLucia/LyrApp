@@ -105,7 +105,9 @@ public class PlaylistController extends AbstractUndecoratedController implements
             Constants.makeBorderRedForAWhile(playlistTitleTextField);
         } else {
             if (currentPlaylist == null) {
-                Playlist playlist = new Playlist(playlistTitleTextField.getText().strip(), new HashSet<>(playlistSongsModel));
+                String title = playlistTitleTextField.getText().strip();
+                title = Constants.removeDiacritics(title);
+                Playlist playlist = new Playlist(title, new HashSet<>(playlistSongsModel));
                 long id = service.addPlaylist(playlist);
                 playlist.setId(id);
                 notifyPlaylistAdded(playlist);

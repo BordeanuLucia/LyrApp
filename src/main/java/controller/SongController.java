@@ -36,7 +36,7 @@ public class SongController extends AbstractUndecoratedController implements Ini
         //we don't have to initialize anything
     }
 
-    public void configure(Song song, SongWindowType songWindowType, ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController) {
+    public void configure(Song song, SongWindowType songWindowType, ILyrAppService service, Stage currentStage, Stage previousStage, LyrAppController lyrAppController, String onlineLyrics) {
         this.currentSong = song;
         this.currentStage = currentStage;
         this.service = service;
@@ -50,6 +50,10 @@ public class SongController extends AbstractUndecoratedController implements Ini
         }
         configureUndecoratedWindow(currentStage, previousStage);
         addObserver(lyrAppController);
+
+        if (onlineLyrics != ""){
+            textTextArea.setText(onlineLyrics);
+        }
     }
 
     @FXML
@@ -63,6 +67,8 @@ public class SongController extends AbstractUndecoratedController implements Ini
     private void addSong() {
         boolean isTextAreaEmpty = textTextArea.getText().replace("\n", "").strip().equals("");
         String title = titleTextField.getText().strip();
+        title = Constants.removeDiacritics(title);
+
         if (title.equals("")) {
             Constants.makeBorderRedForAWhile(titleTextField);
             if (isTextAreaEmpty)
@@ -70,7 +76,9 @@ public class SongController extends AbstractUndecoratedController implements Ini
             return;
         }
         if (!isTextAreaEmpty) {
-            String[] texts = textTextArea.getText().split("\n[ \n]*\n");
+            String fullText = textTextArea.getText();
+            fullText = Constants.removeDiacritics(fullText);
+            String[] texts = fullText.split("\n[ \n]*\n");
             Long position = 0L;
             Set<Strophe> strophes = new HashSet<>();
             for (String text : texts) {
@@ -104,9 +112,13 @@ public class SongController extends AbstractUndecoratedController implements Ini
             if (textTextArea.getText().replace("\n", "").strip().equals("")) {
                 Constants.makeBorderRedForAWhile(textTextArea);
             } else {
-                currentSong.setTitle(titleTextField.getText().strip());
+                String title = titleTextField.getText();
+                title = Constants.removeDiacritics(title);
+                currentSong.setTitle(title.strip());
                 service.updateSong(currentSong);
-                String[] texts = textTextArea.getText().split("\n[ \n]*\n");
+                String fullText = textTextArea.getText();
+                fullText = Constants.removeDiacritics(fullText);
+                String[] texts = fullText.split("\n[ \n]*\n");
                 Long position = 0L;
                 Set<Strophe> strophes = new HashSet<>();
                 for (String text : texts) {

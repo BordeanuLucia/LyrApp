@@ -5,8 +5,10 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -55,17 +57,27 @@ public class Constants {
         }
     }
 
-    public static void runSearchSongRobot(String songTitle){
-        String inputArguments = " --input \"{'inArg' : 'value' , 'String' : '"+ songTitle +"'}\"";
+    public static String runSearchSongRobot(String songTitle){
+        String lyrics = "";
+        String inputArguments = " --input \"{'song_title' : '"+ songTitle +"'}\"";
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", ROBOT_RUN_COMMAND + inputArguments);
         builder.redirectErrorStream(true);
         builder.directory(new File(ROBOT_EXEC_DIR));
         try {
-            builder.start();
+            Process rez = builder.start();
+            BufferedReader r = new BufferedReader(new InputStreamReader(rez.getInputStream()));
+            String line;
+                line = r.readLine();
+                if (line != null) {
+                    line = line.replaceFirst("\\{\"song_lyrics\":\"", "");
+                    lyrics = line.substring(0, line.length() - 2);
+                    lyrics = lyrics.replace("\\n","\n");
+                }
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+        return lyrics;
     }
 
     public static void makeBorderRedForAWhile(TextInputControl textField){
@@ -84,5 +96,47 @@ public class Constants {
             }
         });
         borderColorFades.start();
+    }
+
+    public static String removeDiacritics(String text){
+        StringBuilder result = new StringBuilder();
+        for (String s : text.split("")){
+            boolean added = false;
+            if (s.hashCode() == 259 || s.hashCode() == 226) {
+                result.append("a");
+                added = true;
+            }
+            if (s.hashCode() == 238) {
+                result.append("i");
+                added = true;
+            }
+            if (s.hashCode() == 537) {
+                result.append("s");
+                added = true;
+            }
+            if (s.hashCode() == 539) {
+                result.append("t");
+                added = true;
+            }
+            if (s.hashCode() == 258 || s.hashCode() == 194) {
+                result.append("A");
+                added = true;
+            }
+            if (s.hashCode() == 206) {
+                result.append("I");
+                added = true;
+            }
+            if (s.hashCode() == 536) {
+                result.append("S");
+                added = true;
+            }
+            if (s.hashCode() == 538) {
+                result.append("T");
+                added = true;
+            }
+            if (!added)
+                result.append(s);
+        }
+        return result.toString();
     }
 }
