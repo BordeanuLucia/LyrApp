@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="211.0" prefWidth="363.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ConfirmationController">
    <children>
       <Pane prefHeight="211.0" prefWidth="404.0" style="-fx-border-color: #2c4358;" />
-      <Label alignment="CENTER" layoutX="12.0" layoutY="51.0" prefHeight="28.0" prefWidth="392.0" text="Ești sigur că vrei să ștergi melodia?">
+      <Label alignment="CENTER" layoutX="12.0" layoutY="51.0" prefHeight="28.0" prefWidth="392.0" text="Ești sigur că vrei să ștergi?">
          <font>
             <Font name="Times New Roman Bold" size="25.0" />
          </font>

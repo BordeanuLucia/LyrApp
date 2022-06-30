@@ -32,6 +32,9 @@
                <padding>
                   <Insets bottom="-6.0" left="-6.0" right="-6.0" top="-6.0" />
                </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </Pane>

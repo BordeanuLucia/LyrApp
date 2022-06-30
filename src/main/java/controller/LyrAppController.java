@@ -143,6 +143,15 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             Platform.exit();
             System.exit(0);
         });
+
+        songSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.strip().equals(""))
+                songsModel.setAll(lyrAppService.getAllSongs());
+        });
+        playlistSearchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.strip().equals(""))
+                playlistModel.setAll(lyrAppService.getAllPlaylists());
+        });
     }
 
     public void configure(Stage mainStage) {
@@ -255,9 +264,9 @@ public class LyrAppController extends AbstractUndecoratedController implements I
                     if (item.getTitle() == null || item.getTitle().strip().equals(""))
                         setText("No title");
                     else {
-                        setMinWidth(param.getWidth() - 2);
-                        setMaxWidth(param.getWidth() - 2);
-                        setPrefWidth(param.getWidth() - 2);
+                        setMinWidth(param.getWidth() - 17);
+                        setMaxWidth(param.getWidth() - 17);
+                        setPrefWidth(param.getWidth() - 17);
                         setWrapText(true);
                         setText(item.getTitle());
                         setFont(Font.font(15));
@@ -519,7 +528,8 @@ public class LyrAppController extends AbstractUndecoratedController implements I
             URLConnection conn = u.openConnection();
             conn.connect();
             onlineLyrics = Constants.runSearchSongRobot(songSearchTextField.getText().strip());
-            handleAddButtonClicked();
+            if (!onlineLyrics.equals(""))
+                handleAddButtonClicked();
         } catch (Exception e) {
             this.showSomethingWentWrongWindow(Constants.NO_INTERNET_CONNECTION_STRING);
             e.printStackTrace();

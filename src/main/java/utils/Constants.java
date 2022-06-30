@@ -5,10 +5,9 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -23,7 +22,18 @@ public class Constants {
     public static final int MAX_NUMBER_OF_LINES_ON_SCREEN = 7;
     public static final int MAX_NUMBER_OF_CHARACTERS_ON_LINE_ON_SCREEN = 42;
 
-    public static final String ROBOT_RUN_COMMAND = "UiRobot.exe -file \"E:\\Licenta\\SongSearcherRobot\\SearchSongProcess\\SearchSongs.xaml\"";
+    public static String bot_path = "";
+    public static String studio_path = "";
+
+    static {
+        try {
+            bot_path = Paths.get(Constants.class.getClassLoader().getResource("rpa_utils/SearchSongProcess/SearchSongs.xaml").toURI()).toFile().getAbsolutePath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static final String ROBOT_RUN_COMMAND = "UiRobot.exe -file " + bot_path;
     public static final String ROBOT_EXEC_DIR = "C:\\Program Files (x86)\\UiPath\\Studio";
 
     public static final String NO_INTERNET_CONNECTION_STRING = "Ups...\nnu exista conexiune la internet";
