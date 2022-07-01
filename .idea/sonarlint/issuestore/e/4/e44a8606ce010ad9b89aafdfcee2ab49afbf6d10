@@ -1,0 +1,17 @@
+
+K
+java:S1128".Remove this unused import 'antlr.StringUtils'.(¶òßš8¸ØÀŒ›0
+F
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8ºØÀŒ›0
+X
+java:S1128";Remove this unused import 'java.net.MalformedURLException'.(ªËŞˆ8»ØÀŒ›0
+Z
+java:S1128"8Remove this unused import 'java.net.URISyntaxException'.(Ä®íÿÿÿÿÿ8»ØÀŒ›0
+K
+java:S1128")Remove this unused import 'java.net.URL'.(ñìÁ„üÿÿÿÿ8¼ØÀŒ›0
+M
+java:S1128"0Remove this unused import 'java.nio.file.Paths'.(áè°¯8¼ØÀŒ›0
+S
+java:S1128	"1Remove this unused import 'java.text.Normalizer'.(‡âÌ€øÿÿÿÿ8½ØÀŒ›0
+0
+java:S1220""Move this file to a named package.

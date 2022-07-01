@@ -81,9 +81,9 @@ public class PlaylistListItem extends ListCell<Playlist> {
         } else {
             hbox.getChildren().clear();
             hbox.getChildren().addAll(label, pane, updateButton, spacePane, deleteButton);
-            setMinWidth(playlistListView.getWidth() - 2);
-            setMaxWidth(playlistListView.getWidth() - 2);
-            setPrefWidth(playlistListView.getWidth() - 2);
+            setMinWidth(playlistListView.getWidth() - 17);
+            setMaxWidth(playlistListView.getWidth() - 17);
+            setPrefWidth(playlistListView.getWidth() - 17);
             label.setWrapText(true);
             label.setFont(Font.font(15));
             currentPlaylist = item;

@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import model.Playlist;
@@ -66,9 +68,9 @@ public class PlaylistController extends AbstractUndecoratedController implements
                     if (item.getTitle() == null || item.getTitle().strip().equals(""))
                         setText("No title");
                     else {
-                        setMinWidth(param.getWidth() - 2);
-                        setMaxWidth(param.getWidth() - 2);
-                        setPrefWidth(param.getWidth() - 2);
+                        setMinWidth(param.getWidth() - 17);
+                        setMaxWidth(param.getWidth() - 17);
+                        setPrefWidth(param.getWidth() - 17);
                         setWrapText(true);
                         setText(item.getTitle());
                         setFont(Font.font(15));
@@ -86,9 +88,9 @@ public class PlaylistController extends AbstractUndecoratedController implements
                     if (item.getTitle() == null || item.getTitle().strip().equals(""))
                         setText("No title");
                     else {
-                        setMinWidth(param.getWidth() - 2);
-                        setMaxWidth(param.getWidth() - 2);
-                        setPrefWidth(param.getWidth() - 2);
+                        setMinWidth(param.getWidth() - 17);
+                        setMaxWidth(param.getWidth() - 17);
+                        setPrefWidth(param.getWidth() - 17);
                         setWrapText(true);
                         setText(item.getTitle());
                         setFont(Font.font(15));
@@ -97,6 +99,11 @@ public class PlaylistController extends AbstractUndecoratedController implements
             }
         });
         configureUndecoratedWindow(currentStage, previousStage);
+
+        searchSongTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.strip().equals(""))
+                songsModel.setAll(service.getAllSongs());
+        });
     }
 
     @FXML
@@ -142,9 +149,22 @@ public class PlaylistController extends AbstractUndecoratedController implements
         this.currentStage.close();
     }
 
+    @FXML
+    public void searchKeyPressedForSong(KeyEvent key) {
+        String keyWords = searchSongTextField.getText().strip();
+        if (!key.getCode().equals(KeyCode.ENTER))
+            return;
+        if (!keyWords.equals("")) {
+            songsModel.setAll(service.getFilteredSongs(keyWords));
+        }else{
+            songsModel.setAll(service.getAllSongs());
+        }
+    }
+
     @Override
     public void addObserver(SongPlaylistObserver observer) {
-        observersList.add(observer);
+        if(!observersList.contains(observer))
+            observersList.add(observer);
     }
 
     @Override

@@ -701,7 +701,10 @@ public class LyrAppController extends AbstractUndecoratedController implements I
     }
 
     @Override
-    public void addObserver(Observer observer) { observersList.add(observer); }
+    public void addObserver(Observer observer) {
+        if(!observersList.contains(observer))
+            observersList.add(observer);
+    }
 
     @Override
     public void removeObserver(Observer observer) { observersList.remove(observer); }

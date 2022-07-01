@@ -79,7 +79,8 @@ public class ConfirmationController extends AbstractUndecoratedController implem
 
     @Override
     public void addObserver(SongPlaylistObserver observer) {
-        observersList.add(observer);
+        if(!observersList.contains(observer))
+            observersList.add(observer);
     }
 
     @Override

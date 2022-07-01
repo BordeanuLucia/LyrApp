@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlaylistController">
    <children>
       <Pane prefHeight="400.0" prefWidth="602.0" style="-fx-border-color: #2c4358; -fx-border-width: 2;">
@@ -24,7 +23,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TextField fx:id="searchSongTextField" layoutX="334.0" layoutY="78.0" prefHeight="31.0" prefWidth="227.0" promptText="cauta melodie">
+            <TextField fx:id="searchSongTextField" layoutX="334.0" layoutY="74.0" onKeyPressed="#searchKeyPressedForSong" prefHeight="31.0" prefWidth="227.0" promptText="cauta melodie">
                <font>
                   <Font size="15.0" />
                </font>
@@ -65,7 +64,7 @@
          </children>
       </Pane>
       <ListView fx:id="playlistSongsListView" layoutX="51.0" layoutY="138.0" prefHeight="246.0" prefWidth="227.0" />
-      <ListView fx:id="songsListView" layoutX="334.0" layoutY="109.0" prefHeight="274.0" prefWidth="227.0" />
+      <ListView fx:id="songsListView" layoutX="334.0" layoutY="105.0" prefHeight="278.0" prefWidth="227.0" />
       <TextField fx:id="playlistTitleTextField" layoutX="51.0" layoutY="74.0" prefHeight="31.0" prefWidth="227.0">
          <font>
             <Font size="15.0" />
